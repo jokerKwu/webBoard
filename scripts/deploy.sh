@@ -19,7 +19,7 @@ cd $REPOSITORY
 
 echo "> Build file copy"
 
-cp $REPOSITORY/$PROJECT_NAME/build/*.jar $REPOSITORY/
+cp $REPOSITORY/$PROJECT_NAME/build/libs/*.jar $REPOSITORY/
 
 echo "currently application pid: $CURRENT_PID"
 echo "> currently application pid check"

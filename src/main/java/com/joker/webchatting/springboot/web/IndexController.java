@@ -83,7 +83,7 @@ public class IndexController {
         return "posts-update";
     }
 
-    @GetMapping("/chat")
+    @GetMapping("/posts/chat")
     public String chat(Model model,@LoginUser SessionUser user){
         model.addAttribute("user",user.getName());
         return "chat";
