@@ -20,7 +20,6 @@ public class AsyncConfiguration {
         taskExecutor.setThreadNamePrefix("Async-Executor-");
         taskExecutor.setDaemon(true);
         taskExecutor.initialize();
-
         return taskExecutor;
     }
 }
