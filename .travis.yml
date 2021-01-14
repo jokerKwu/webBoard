@@ -1,0 +1,43 @@
+language: java
+jdk:
+  - openjdk8
+
+branches:
+  only:
+    - master
+
+# Travis CI 서버의 Home
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.gradle'
+
+script: "./gradlew clean build"
+
+before_install:
+  - chmod +x gradlew
+
+before_deploy:
+  - zip -r springboot-webchatting *
+  - mkdir -p deploy
+  - mv springboot-webchatting.zip deploy/springboot-webchatting.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: springboot-webchatting-deploy
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: public_read
+    local_dir: deploy
+    wait-until-deployed: true
+    on:
+      repo: jokerKwu/springboot-webchatting
+      branch: master
+
+# CI 실행 완료시 메일로 알람
+notification:
+  email:
+    recipients:
+      - south485@daum.net
