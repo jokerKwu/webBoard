@@ -73,3 +73,20 @@ var main = {
 };
 
 main.init();
+
+function setThumbnail(event){
+    for (var image of event.target.files) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            var img = document.createElement("img");
+            img.setAttribute("src",event.target.result);
+            img.setAttribute("class","img-thumbnail");
+            img.width = 300;
+            img.height = 300;
+
+            document.querySelector("div#image_container").appendChild(img);
+        };
+        console.log(image);
+        reader.readAsDataURL(image);
+    }
+}
