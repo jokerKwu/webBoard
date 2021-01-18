@@ -92,7 +92,7 @@ public class IndexController {
     @GetMapping("/post/search")
     public String search(@RequestParam(value="keyword")String keyword, Model model, @LoginUser SessionUser user){
         List<PostDto> postDtoList = postsService.searchPosts(keyword);
-
+        model.addAttribute("name",user.getName());
         model.addAttribute("posts", postDtoList);
         model.addAttribute("same",user.getName());
         return "index";

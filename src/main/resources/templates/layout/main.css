@@ -16,3 +16,6 @@ textarea {
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
+#content{
+    height: 50%;
+}
