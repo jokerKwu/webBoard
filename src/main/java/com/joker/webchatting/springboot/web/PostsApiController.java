@@ -1,20 +1,15 @@
 package com.joker.webchatting.springboot.web;
 
 
+import com.joker.webchatting.springboot.service.posts.FileService;
 import com.joker.webchatting.springboot.service.posts.PostsService;
-import com.joker.webchatting.springboot.web.dto.PostsListResponseDto;
-import com.joker.webchatting.springboot.web.dto.PostsResponseDto;
-import com.joker.webchatting.springboot.web.dto.PostsSaveRequestDto;
-import com.joker.webchatting.springboot.web.dto.PostsUpdateRequestDto;
+import com.joker.webchatting.springboot.util.MD5Generator;
+import com.joker.webchatting.springboot.web.dto.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,6 +17,34 @@ import java.util.List;
 public class PostsApiController {
 
     private final PostsService postsService;
+    private final FileService fileService;
+
+    @PostMapping("/api/v1/fileUpload")
+    public void uploadAjaxPost(@RequestParam("uploadFile") MultipartFile[] files, @RequestParam("post")String requestDto ) {
+        System.out.println("update ajax post.................");
+
+        String uploadFolder = "C:\\upload";
+        System.out.println(requestDto);
+        for(MultipartFile multipartFile : files) {
+            System.out.println("---------------------------------");
+            System.out.println("Upload File Name :"+multipartFile.getOriginalFilename());
+            System.out.println("Upload File Size : " + multipartFile.getSize());
+
+            String uploadFileName = multipartFile.getOriginalFilename();
+
+            //IE has file path
+            uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
+            System.out.println("only file name : " + uploadFileName);
+
+            File saveFile = new File(uploadFolder, uploadFileName);
+
+            try {
+                multipartFile.transferTo(saveFile);
+            }catch (Exception e) {
+                System.out.println(e.getMessage());
+            }//end catch
+        }//end for
+    }
 
     @PostMapping("/api/v1/posts")
     public Long save(@RequestBody PostsSaveRequestDto requestDto) {

@@ -2,7 +2,7 @@
 <h1 style="text-align: center;">게시글 등록</h1>
 <div class="col-md-12">
     <div class="col-md-10">
-        <form>
+        <form method="POST" id="fileForm" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">제목</label>
                 <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요">
@@ -15,9 +15,15 @@
                 <label for="content"> 내용 </label>
                 <textarea class="form-control" id="content" style= "height:255px;" placeholder="내용을 입력하세요"></textarea>
             </div>
+            <!-- 이미지 업로드
             <div class="form-group">
                 <input type="file" id="image" accept="/js/app/image/*" onchange="setThumbnail(event);"multiple/>
                 <div id="image_container"></div>
+            </div>
+            -->
+            <div class="custom-file" id="inputFile">
+                <input name="uploadFile" type="file" class="custom-file-input" id="uploadFile" multiple>
+                <label class="custom-file-label" for="customFile">파일을 선택해 주세요.</label>
             </div>
         </form>
         <a href="/" role="button" class="btn btn-outline-danger">취소</a>

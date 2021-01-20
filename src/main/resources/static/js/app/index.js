@@ -14,23 +14,40 @@ var main = {
         });
     },
     save : function () {
+        var formData = new FormData();
+        var inputFile = $("input[name='uploadFile']");
+        var files = inputFile[0].files;
+
+        for (var i=0;i<files.length;i++){
+            formData.append("uploadFile", files[i]);
+        }
         var data = {
             title: $('#title').val(),
             author: $('#author').val(),
             content: $('#content').val()
         };
-
+        formData.append('post', data);
         $.ajax({
             type: 'POST',
-            url: '/api/v1/posts',
-            dataType: 'json',
-            contentType:'application/json; charset=utf-8',
-            data: JSON.stringify(data)
+            url: '/api/v1/fileUpload',
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function(){
+
+            }
+ //           dataType: 'json',
+ //           contentType:'application/json; charset=utf-8',
+ //           data: JSON.stringify(data)
+ //           data: formData,
         }).done(function() {
             alert('글이 등록되었습니다.');
             window.location.href = '/';
         }).fail(function (error) {
             alert(JSON.stringify(error));
+        });
+        $.ajax({
+
         });
     },
     update : function () {
@@ -90,3 +107,11 @@ function setThumbnail(event){
         reader.readAsDataURL(image);
     }
 }
+
+/*
+21-01-19 파일업로드
+ */
+$(".custom-file-input").on("change", function() {
+    var fileName = $(this).val().split("\\").pop();
+    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});

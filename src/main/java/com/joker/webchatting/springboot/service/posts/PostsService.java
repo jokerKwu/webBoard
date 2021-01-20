@@ -24,7 +24,19 @@ public class PostsService {
     private static final int BLOCK_PAGE_NUM_COUNT = 5;  // 블럭에 존재하는 페이지 번호 수
     private static final int PAGE_POST_COUNT = 4;       // 한 페이지에 존재하는 게시글 수
 
+    @Transactional
+    public PostDto getPost(Long id) {
+        Posts board = postsRepository.findById(id).get();
 
+        PostDto boardDto = PostDto.builder()
+                .id(board.getId())
+                .author(board.getAuthor())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .fileId(board.getFileId())
+                .build();
+        return boardDto;
+    }
 
     @Transactional
     public Long save(PostsSaveRequestDto requestDto) {
@@ -51,6 +63,9 @@ public class PostsService {
 
     @Transactional(readOnly = true)
     public PostsResponseDto findById(Long id) {
+        //Posts posts = postsRepository.findById(id).get();
+
+
         Posts entity = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
 
@@ -83,6 +98,7 @@ public class PostsService {
                 .title(postEntity.getTitle())
                 .modifiedDate(postEntity.getModifiedDate())
                 .id(postEntity.getId())
+                .fileId(postEntity.getFileId())
                 .build();
     }
 

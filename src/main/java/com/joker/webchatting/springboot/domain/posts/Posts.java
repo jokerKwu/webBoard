@@ -4,16 +4,14 @@ import com.joker.webchatting.springboot.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class) /* JPA에게 해당 Entity는 Auditiong 기능을 사용함을 알립니다. */
 public class Posts extends BaseTimeEntity {
 
     @Id
@@ -28,11 +26,16 @@ public class Posts extends BaseTimeEntity {
 
     private String author;
 
+    @Column
+    private Long fileId;
+
+
     @Builder
-    public Posts(String title, String content, String author) {
+    public Posts(String title, String content, String author, Long fileId) {
         this.title = title;
         this.content = content;
         this.author = author;
+        this.fileId = fileId;
     }
 
     public void update(String title, String content) {
