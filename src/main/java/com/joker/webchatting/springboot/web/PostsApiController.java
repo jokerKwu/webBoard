@@ -95,13 +95,14 @@ public class PostsApiController {
             재등록한다.
     */
     @PutMapping("api/v1/posts/{id}")
-    public Long update(@PathVariable Long id, @RequestParam("uploadFile") MultipartFile[] files, @RequestParam("title")String title, @RequestParam("content")String content ){
+    public Long update(@PathVariable Long id, @RequestParam("uploadFile") MultipartFile[] files, @RequestParam("title")String title, @RequestParam("author")String author, @RequestParam("content")String content ){
 
         //파일을 등록한다.
         String savePath = "C:\\upload";//실행되는 위치의 files 폴더에 파일이 저장된다.
         PostsUpdateRequestDto requestDto = new PostsUpdateRequestDto();
         requestDto.setTitle(title);
         requestDto.setContent(content);
+        System.out.println("dddd");
         for(MultipartFile multipartFile : files) {
             System.out.println("---------------------------------");
             System.out.println("Upload File Name :" + multipartFile.getOriginalFilename());
@@ -136,12 +137,12 @@ public class PostsApiController {
         }
         return postsService.update(id, requestDto);
     }
-
+/*
     @PutMapping("/api/v1/posts/{id}")
     public Long update(@PathVariable Long id, @RequestBody PostsUpdateRequestDto requestDto) {
         return postsService.update(id, requestDto);
     }
-
+*/
     @DeleteMapping("/api/v1/posts/{id}")
     public Long delete(@PathVariable Long id) {
         postsService.delete(id);

@@ -6,7 +6,7 @@ var main = {
         });
 
         $('#btn-update').on('click',function(){
-           _this.update();
+           _this.update_t();
         });
 
         $('#btn-delete').on('click', function () {
@@ -24,6 +24,9 @@ var main = {
         formData.append('title', $('#title').val());
         formData.append('author',$('#author').val());
         formData.append('content',$('#content').val());
+        alert($('#title').val());
+        alert($('#author').val());
+        alert($('#content').val());
 
         $.ajax({
             type: 'POST',
@@ -76,18 +79,20 @@ var main = {
         formData.append('title', $('#title').val());
         formData.append('author',$('#author').val());
         formData.append('content',$('#content').val());
+        alert($('#title').val());
+        alert($('#author').val());
+        alert($('#content').val());
         var id = $('#id').val();
-
         $.ajax({
             type: 'PUT',
             url: '/api/v1/posts/'+id,
             processData: false,
             contentType: false,
+            data: formData,
             success: function(){
-
             }
         }).done(function() {
-            alert('글이 등록되었습니다.');
+            alert('글이 수정되었습니다.');
             window.location.href = '/';
         }).fail(function (error) {
             alert(JSON.stringify(error));
