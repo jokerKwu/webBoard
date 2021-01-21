@@ -69,22 +69,6 @@ public class PostsApiController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            /*
-            //IE has file path
-            uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
-            System.out.println("only file name : " + uploadFileName);
-
-            File saveFile = new File(uploadFolder, uploadFileName);
-
-            try {
-                multipartFile.transferTo(saveFile);
-
-            }catch (Exception e) {
-                System.out.println(e.getMessage());
-            }//end catch
-        }//end for
-
-             */
         }
         postsService.save(requestDto);
 
@@ -104,6 +88,53 @@ public class PostsApiController {
     @PostMapping("/api/v1/posts")
     public Long save(@RequestBody PostsSaveRequestDto requestDto) {
         return postsService.save(requestDto);
+    }
+
+    /*
+            기존에 등록되어 있는 파일 삭제하고
+            재등록한다.
+    */
+    @PutMapping("api/v1/posts/{id}")
+    public Long update(@PathVariable Long id, @RequestParam("uploadFile") MultipartFile[] files, @RequestParam("title")String title, @RequestParam("content")String content ){
+
+        //파일을 등록한다.
+        String savePath = "C:\\upload";//실행되는 위치의 files 폴더에 파일이 저장된다.
+        PostsUpdateRequestDto requestDto = new PostsUpdateRequestDto();
+        requestDto.setTitle(title);
+        requestDto.setContent(content);
+        for(MultipartFile multipartFile : files) {
+            System.out.println("---------------------------------");
+            System.out.println("Upload File Name :" + multipartFile.getOriginalFilename());
+            System.out.println("Upload File Size : " + multipartFile.getSize());
+
+            String origFilename = multipartFile.getOriginalFilename(); //origFilename
+            requestDto.setFilename(origFilename);
+            /*
+                db에 파일아이디 저장
+             */
+            try {
+                String filename = new MD5Generator(origFilename).toString();
+                if (!new File(savePath).exists()) {
+                    try {
+                        new File(savePath).mkdir();
+                    } catch (Exception e) {
+                        e.getStackTrace();
+                    }
+                }
+                String filePath = savePath + "\\" + filename;
+                multipartFile.transferTo(new File(filePath));
+                FileDto fileDto = new FileDto();
+                fileDto.setOrigFilename(origFilename);
+                fileDto.setFilename(filename);
+                fileDto.setFilePath(filePath);
+
+                Long fileId = fileService.saveFile(fileDto);
+                requestDto.setFileId(fileId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return postsService.update(id, requestDto);
     }
 
     @PutMapping("/api/v1/posts/{id}")

@@ -44,11 +44,9 @@ var main = {
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
-        $.ajax({
-
-        });
     },
     update : function () {
+
         var data = {
             title: $('#title').val(),
             content: $('#content').val()
@@ -63,6 +61,33 @@ var main = {
             data: JSON.stringify(data)
         }).done(function() {
             alert('글이 수정되었습니다.');
+            window.location.href = '/';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    update_t : function(){
+        var formData = new FormData();
+        var inputFile = $("input[name='uploadFile']");
+        var files = inputFile[0].files;
+        for (var i = 0; i < files.length; i++){
+            formData.append("uploadFile",files[i]);
+        }
+        formData.append('title', $('#title').val());
+        formData.append('author',$('#author').val());
+        formData.append('content',$('#content').val());
+        var id = $('#id').val();
+
+        $.ajax({
+            type: 'PUT',
+            url: '/api/v1/posts/'+id,
+            processData: false,
+            contentType: false,
+            success: function(){
+
+            }
+        }).done(function() {
+            alert('글이 등록되었습니다.');
             window.location.href = '/';
         }).fail(function (error) {
             alert(JSON.stringify(error));
