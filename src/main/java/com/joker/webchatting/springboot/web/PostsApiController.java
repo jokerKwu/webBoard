@@ -3,6 +3,7 @@ package com.joker.webchatting.springboot.web;
 
 import com.joker.webchatting.springboot.service.posts.FileService;
 import com.joker.webchatting.springboot.service.posts.PostsService;
+import com.joker.webchatting.springboot.util.MD5Generator;
 import com.joker.webchatting.springboot.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,20 +21,46 @@ public class PostsApiController {
     private final PostsService postsService;
     private final FileService fileService;
 
+
+
     @PostMapping("/api/v1/fileUpload")
     public void uploadAjaxPost(@RequestParam("uploadFile") MultipartFile[] files, @RequestParam("title")String title, @RequestParam("author")String author, @RequestParam("content")String content ) {
-        String uploadFolder = "C:\\upload";
+        String savePath = "C:\\upload";//실행되는 위치의 files 폴더에 파일이 저장된다.
         PostsSaveRequestDto requestDto = new PostsSaveRequestDto();
         requestDto.setTitle(title);
         requestDto.setAuthor(author);
         requestDto.setContent(content);
         for(MultipartFile multipartFile : files) {
             System.out.println("---------------------------------");
-            System.out.println("Upload File Name :"+multipartFile.getOriginalFilename());
+            System.out.println("Upload File Name :" + multipartFile.getOriginalFilename());
             System.out.println("Upload File Size : " + multipartFile.getSize());
 
-            String uploadFileName = multipartFile.getOriginalFilename();
+            String origFilename = multipartFile.getOriginalFilename(); //origFilename
+            /*
+                db에 파일아이디 저장
+             */
+            try {
+                String filename = new MD5Generator(origFilename).toString();
+                if (!new File(savePath).exists()) {
+                    try {
+                        new File(savePath).mkdir();
+                    } catch (Exception e) {
+                        e.getStackTrace();
+                    }
+                }
+                String filePath = savePath + "\\" + filename;
+                multipartFile.transferTo(new File(filePath));
+                FileDto fileDto = new FileDto();
+                fileDto.setOrigFilename(origFilename);
+                fileDto.setFilename(filename);
+                fileDto.setFilePath(filePath);
 
+                Long fileId = fileService.saveFile(fileDto);
+                requestDto.setFileId(fileId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            /*
             //IE has file path
             uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
             System.out.println("only file name : " + uploadFileName);
@@ -47,6 +74,9 @@ public class PostsApiController {
                 System.out.println(e.getMessage());
             }//end catch
         }//end for
+
+             */
+        }
         postsService.save(requestDto);
 
     }
