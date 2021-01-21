@@ -21,12 +21,10 @@ var main = {
         for (var i=0;i<files.length;i++){
             formData.append("uploadFile", files[i]);
         }
-        var data = {
-            title: $('#title').val(),
-            author: $('#author').val(),
-            content: $('#content').val()
-        };
-        formData.append('post', data);
+        formData.append('title', $('#title').val());
+        formData.append('author',$('#author').val());
+        formData.append('content',$('#content').val());
+
         $.ajax({
             type: 'POST',
             url: '/api/v1/fileUpload',

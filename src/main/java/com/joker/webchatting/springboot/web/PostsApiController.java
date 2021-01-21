@@ -3,11 +3,12 @@ package com.joker.webchatting.springboot.web;
 
 import com.joker.webchatting.springboot.service.posts.FileService;
 import com.joker.webchatting.springboot.service.posts.PostsService;
-import com.joker.webchatting.springboot.util.MD5Generator;
 import com.joker.webchatting.springboot.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.io.File;
 import java.util.List;
@@ -20,11 +21,12 @@ public class PostsApiController {
     private final FileService fileService;
 
     @PostMapping("/api/v1/fileUpload")
-    public void uploadAjaxPost(@RequestParam("uploadFile") MultipartFile[] files, @RequestParam("post")String requestDto ) {
-        System.out.println("update ajax post.................");
-
+    public void uploadAjaxPost(@RequestParam("uploadFile") MultipartFile[] files, @RequestParam("title")String title, @RequestParam("author")String author, @RequestParam("content")String content ) {
         String uploadFolder = "C:\\upload";
-        System.out.println(requestDto);
+        PostsSaveRequestDto requestDto = new PostsSaveRequestDto();
+        requestDto.setTitle(title);
+        requestDto.setAuthor(author);
+        requestDto.setContent(content);
         for(MultipartFile multipartFile : files) {
             System.out.println("---------------------------------");
             System.out.println("Upload File Name :"+multipartFile.getOriginalFilename());
@@ -40,10 +42,13 @@ public class PostsApiController {
 
             try {
                 multipartFile.transferTo(saveFile);
+
             }catch (Exception e) {
                 System.out.println(e.getMessage());
             }//end catch
         }//end for
+        postsService.save(requestDto);
+
     }
 
     @PostMapping("/api/v1/posts")
