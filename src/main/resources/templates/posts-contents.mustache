@@ -21,6 +21,17 @@
                 <label for="content"> 내용 </label>
                 <textarea class="form-control" id="content" style= height:255px;" readonly>{{post.content}}</textarea>
             </div>
+            {{#post.fileId}}
+                <div  class="form-group">
+                    <strong>첨부파일 :  </strong>
+                    <a href="/download/{{post.fileId}}" role="button" id="btn_download">{{post.fileId}}</a>
+                </div>
+            {{/post.fileId}}
+            {{^post.fileId}}
+                <div  class="form-group">
+                    <strong>첨부파일 : </strong>
+                </div>
+            {{/post.fileId}}
         </form>
         <a href="/" role="button" class="btn btn-outline-danger">취소</a>
         {{#same}}

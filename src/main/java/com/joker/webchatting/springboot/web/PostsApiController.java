@@ -6,12 +6,20 @@ import com.joker.webchatting.springboot.service.posts.PostsService;
 import com.joker.webchatting.springboot.util.MD5Generator;
 import com.joker.webchatting.springboot.web.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -79,6 +87,17 @@ public class PostsApiController {
         }
         postsService.save(requestDto);
 
+    }
+
+    @GetMapping("/download/{fileId}")
+    public ResponseEntity<Resource> fileDownload(@PathVariable("fileId") Long fileId) throws IOException {
+        FileDto fileDto = fileService.getFile(fileId);
+        Path path = Paths.get(fileDto.getFilePath());
+        Resource resource = new InputStreamResource(Files.newInputStream(path));
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDto.getOrigFilename() + "\"")
+                .body(resource);
     }
 
     @PostMapping("/api/v1/posts")
