@@ -16,6 +16,7 @@ public class PostDto {
     private String author;
     private String content;
     private Long fileId;
+    private String filename;
     private LocalDateTime modifiedDate;
 
     public Posts toEntity(){
@@ -24,17 +25,19 @@ public class PostDto {
                 .author(author)
                 .content(content)
                 .fileId(fileId)
+                .filename(filename)
                 .build();
         return postEntity;
     }
 
     @Builder
-    public PostDto(Long id, String title,String content, String author, Long fileId, LocalDateTime modifiedDate){
-        this.id=id;
-        this.title=title;
-        this.content=content;
-        this.author =author;
-        this.modifiedDate=modifiedDate;
+    public PostDto(Long id, String title,String content, String author, Long fileId, String filename, LocalDateTime modifiedDate){
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.author = author;
+        this.modifiedDate = modifiedDate;
+        this.filename = filename;
         this.fileId=fileId;
     }
 }

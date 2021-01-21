@@ -26,16 +26,16 @@ public class PostsService {
 
     @Transactional
     public PostDto getPost(Long id) {
-        Posts board = postsRepository.findById(id).get();
+        Posts post = postsRepository.findById(id).get();
 
-        PostDto boardDto = PostDto.builder()
-                .id(board.getId())
-                .author(board.getAuthor())
-                .title(board.getTitle())
-                .content(board.getContent())
-                .fileId(board.getFileId())
+        PostDto postDto = PostDto.builder()
+                .id(post.getId())
+                .author(post.getAuthor())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .fileId(post.getFileId())
                 .build();
-        return boardDto;
+        return postDto;
     }
 
     @Transactional
@@ -64,8 +64,6 @@ public class PostsService {
     @Transactional(readOnly = true)
     public PostsResponseDto findById(Long id) {
         //Posts posts = postsRepository.findById(id).get();
-
-
         Posts entity = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
 
@@ -101,10 +99,7 @@ public class PostsService {
                 .fileId(postEntity.getFileId())
                 .build();
     }
-
-
     //페이지 번호 추가
-
     @Transactional
     public List<PostDto> getPostlist(Integer pageNum) {
         Page<Posts> page = postsRepository.findAll(PageRequest.of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.ASC, "createdDate")));
@@ -115,10 +110,8 @@ public class PostsService {
         for (Posts postEntity : postEntities) {
             postDtoList.add(this.convertEntityToDto(postEntity));
         }
-
         return postDtoList;
     }
-
     @Transactional
     public Long getPostCount() {
         return postsRepository.count();
@@ -159,6 +152,4 @@ public class PostsService {
 
         return postsRepository.findAll(pageable);
     }
-
-
 }

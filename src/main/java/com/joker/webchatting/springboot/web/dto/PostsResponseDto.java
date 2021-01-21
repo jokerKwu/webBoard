@@ -10,6 +10,7 @@ public class PostsResponseDto {
     private String title;
     private String content;
     private Long fileId;
+    private String filename;
     private String author;
 
     public PostsResponseDto(Posts entity) {
@@ -18,5 +19,6 @@ public class PostsResponseDto {
         this.content = entity.getContent();
         this.fileId = entity.getFileId();
         this.author = entity.getAuthor();
+        this.filename = entity.getFilename();
     }
 }

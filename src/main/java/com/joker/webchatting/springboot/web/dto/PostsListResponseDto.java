@@ -10,6 +10,7 @@ public class PostsListResponseDto {
     private String title;
     private String author;
     private Long fileId;
+    private String filename;
     private LocalDateTime modifiedDate;
 
     public PostsListResponseDto(Posts entity) {
@@ -17,6 +18,7 @@ public class PostsListResponseDto {
         this.title = entity.getTitle();
         this.author = entity.getAuthor();
         this.fileId = entity.getFileId();
+        this.filename = entity.getFilename();
         this.modifiedDate = entity.getModifiedDate();
     }
 }

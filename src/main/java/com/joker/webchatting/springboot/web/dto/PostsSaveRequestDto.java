@@ -13,13 +13,15 @@ public class PostsSaveRequestDto {
     private String title;
     private String content;
     private String author;
+    private String filename;
     private Long fileId;
     @Builder
-    public PostsSaveRequestDto(String title, String content, String author, Long fileId) {
+    public PostsSaveRequestDto(String title, String content, String author, String filename , Long fileId) {
         this.title = title;
         this.content = content;
         this.author = author;
         this.fileId = fileId;
+        this.filename = filename;
     }
 
     public Posts toEntity() {
@@ -28,6 +30,7 @@ public class PostsSaveRequestDto {
                 .content(content)
                 .author(author)
                 .fileId(fileId)
+                .filename(filename)
                 .build();
     }
 

@@ -44,6 +44,7 @@ public class PostsApiController {
             System.out.println("Upload File Size : " + multipartFile.getSize());
 
             String origFilename = multipartFile.getOriginalFilename(); //origFilename
+            requestDto.setFilename(origFilename);
             /*
                 db에 파일아이디 저장
              */
