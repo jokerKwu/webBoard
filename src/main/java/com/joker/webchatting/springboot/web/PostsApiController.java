@@ -38,6 +38,8 @@ public class PostsApiController {
         requestDto.setTitle(title);
         requestDto.setAuthor(author);
         requestDto.setContent(content);
+
+
         for(MultipartFile multipartFile : files) {
             System.out.println("---------------------------------");
             System.out.println("Upload File Name :" + multipartFile.getOriginalFilename());
@@ -94,7 +96,7 @@ public class PostsApiController {
             기존에 등록되어 있는 파일 삭제하고
             재등록한다.
     */
-    @PutMapping("api/v1/posts/{id}")
+    @PostMapping("api/v1/posts/{id}")
     public Long update(@PathVariable Long id, @RequestParam("uploadFile") MultipartFile[] files, @RequestParam("title")String title, @RequestParam("author")String author, @RequestParam("content")String content ){
 
         //파일을 등록한다.
@@ -102,7 +104,8 @@ public class PostsApiController {
         PostsUpdateRequestDto requestDto = new PostsUpdateRequestDto();
         requestDto.setTitle(title);
         requestDto.setContent(content);
-        System.out.println("dddd");
+
+
         for(MultipartFile multipartFile : files) {
             System.out.println("---------------------------------");
             System.out.println("Upload File Name :" + multipartFile.getOriginalFilename());

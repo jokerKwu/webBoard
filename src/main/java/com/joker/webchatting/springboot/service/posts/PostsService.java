@@ -1,6 +1,7 @@
 package com.joker.webchatting.springboot.service.posts;
 
 
+import com.joker.webchatting.springboot.domain.posts.FileRepository;
 import com.joker.webchatting.springboot.domain.posts.Posts;
 import com.joker.webchatting.springboot.domain.posts.PostsRepository;
 import com.joker.webchatting.springboot.web.dto.*;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class PostsService {
     private final PostsRepository postsRepository;
+    private final FileRepository fileRepository;
 
     private static final int BLOCK_PAGE_NUM_COUNT = 5;  // 블럭에 존재하는 페이지 번호 수
     private static final int PAGE_POST_COUNT = 4;       // 한 페이지에 존재하는 게시글 수
@@ -48,7 +50,7 @@ public class PostsService {
         Posts posts = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
 
-        posts.update(requestDto.getTitle(), requestDto.getContent());
+        posts.update(requestDto.getTitle(), requestDto.getContent(),requestDto.getFileId(),requestDto.getFilename());
 
         return id;
     }
