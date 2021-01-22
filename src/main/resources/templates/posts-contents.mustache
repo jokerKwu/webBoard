@@ -43,6 +43,27 @@
             <button type="button" class="btn btn-outline-danger" id="btn-delete" disabled>삭제</button>
         {{/same}}
     </div>
+    <!--
+    21-01-22 댓글 추가 진행중
+    -->
+    <div class="container">
+        <label for="commentsContent">comment</label>
+        <form name="commentsForm">
+            <div class="input-group">
+                <input type="hidden" name="postId" value={{post.id}}/>
+                <input type="text" class="form-control" id="commentsContent" name="commentsContent" placeholder="내용을 입력하세요.">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" id="btn-comments-save" name="btn-comments-save">등록</button>
+               </span>
+            </div>
+        </form>
+    </div>
+
+    <div class="container">
+        <div class="commentsList"></div>
+    </div>
 </div>
+
+
 
 {{>layout/footer}}
