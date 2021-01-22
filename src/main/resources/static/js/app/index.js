@@ -16,8 +16,7 @@ var main = {
         $('#btn-comments-save').on('click',function(){
            _this.comments_save();
         });
-
-        _this.commentList();
+       commentsList();
     },
     save : function () {
         var formData = new FormData();
@@ -110,46 +109,10 @@ var main = {
             alert(JSON.stringify(error));
         });
     },
-    comments_save : function(){
-        var formData = new FormData();
-        formData.append('author', $('#author').val());
-        formData.append('postId', $('#id').val());
-        formData.append('commentsContent', $('#commentsContent').val());
-        alert($('#id').val());
-        alert(formData.get('postId'));
-
-        $.ajax({
-            type: 'POST',
-            url: '/api/v1/comments',
-            processData: false,
-            contentType: false,
-            data: formData,
-        }).done(function(){
-            alert('댓글이 등록되었다.');
-            commentList(formData.get('postId'));
-        }).fail(function (error){
-            alert(JSON.stringify(error))
-        });
-    },
-    commentsDelete : function(commentsId){
-        var id = commentsId;
-
-        $.ajax({
-            type: 'DELETE',
-            url: '/api/v1/comments/{id}',
-            dataType: 'json',
-            contentType:'application/json; charset=utf-8'
-        }).done(function(){
-            alert('글이 삭제되었습니다.');
-            window.location.href = '/'; //리다이렉트로 수정해야됨
-        }).fail(function (error){
-            alert(JSON.stringify(error));
-        });
-    },
     commentsUpdateProc : function(commentsId){
         var data = {
             'commentsId': commentsId,
-            'content': $('#content').val()
+            'content': $('#commentsContent').val()
         };
 
         $.ajax({
@@ -160,7 +123,7 @@ var main = {
             data: JSON.stringify(data)
         }).done(function() {
             alert('댓글이 수정되었습니다.');
-            if(data == 1) commentList(postId);
+            if(data == 1) commentsList(postId);
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
@@ -175,32 +138,41 @@ var main = {
 
         $('.commentsContent'+commentsId).html(a);
     },
-
-    commentList : function(){
-        var postId = $('#id').val();
+    commentsDelete : function(commentsId){
+        var id = commentsId;
         $.ajax({
-            url : '/api/v1/comments/list',
-            type : 'get',
-            data : {'postId':postId},
-            success : function(data){
-                var a ='';
-                $.each(data, function(key, value){
-                    alert(value);
-                    a += '<div class="commentArea" style="border-bottom:1px solid darkgray; margin-bottom: 15px;">';
-                    a += '<div class="commentInfo'+value.id+'">'+'댓글번호 : '+value.id+' / 작성자 : '+value.author;
-                    a += '<a onclick="commentsUpdate('+value.id+',\''+value.content+'\');"> 수정 </a>';
-                    a += '<a onclick="commentsDelete('+value.id+');"> 삭제 </a> </div>';
-                    a += '<div class="commentsContent'+value.id+'"> <p> 내용 : '+value.content +'</p>';
-                    a += '</div></div>';
-                });
-
-                $(".commentsList").html(a);
-            }
+            type: 'DELETE',
+            url: '/api/v1/comments/{id}',
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8'
+        }).done(function(){
+            alert('댓글이 삭제되었습니다.');
+            window.location.href = '/'; //리다이렉트로 수정해야됨
+        }).fail(function (error){
+            alert(JSON.stringify(error));
         });
     },
 
+    comments_save : function(){
+        var formData = new FormData();
+        formData.append('author', $('#author').val());
+        formData.append('postId', $('#id').val());
+        formData.append('commentsContent', $('#commentsContent').val());
 
-
+        $.ajax({
+            type: 'POST',
+            url: '/api/v1/comments',
+            processData: false,
+            contentType: false,
+            data: formData,
+        }).done(function(){
+            alert('댓글이 등록되었다.');
+            commentsList(formData.get('postId'));
+            $('#commentsContent').val('');
+        }).fail(function (error){
+            alert(JSON.stringify(error))
+        });
+    }
 };
 
 main.init();
@@ -233,5 +205,26 @@ $(".custom-file-input").on("change", function() {
 /*
 21-01-22 댓글 구현 ~
  */
+function commentsList(){
+    var postId = $('#id').val();
+    $.ajax({
+        url : '/api/v1/comments/list',
+        type : 'get',
+        data : {'postId':postId},
+        success : function(data){
+            var a ='';
+            $.each(data, function(key, value){
+                a += '<div class="commentArea" style="border-bottom:1px solid darkgray; margin-bottom: 15px;">';
+                a += '<div class="commentInfo'+value.id+'">'+'댓글번호 : '+value.id+' / 작성자 : '+value.author;
+                a += '<a onclick="commentsUpdate('+value.id+',\''+value.content+'\');"> 수정 </a>';
+                a += '<a onclick="commentsDelete('+value.id+');"> 삭제 </a> </div>';
+                a += '<div class="commentsContent'+value.id+'"> <p> 내용 : '+value.content +'</p>';
+                a += '</div></div>';
+            });
+
+            $(".commentsList").html(a);
+        }
+    });
+}
 
 
