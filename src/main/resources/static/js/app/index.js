@@ -109,50 +109,6 @@ var main = {
             alert(JSON.stringify(error));
         });
     },
-    commentsUpdateProc : function(commentsId){
-        var data = {
-            'commentsId': commentsId,
-            'content': $('#commentsContent').val()
-        };
-
-        $.ajax({
-            type: 'PUT',
-            url: '/api/v1/comments/'+id,
-            dataType: 'json',
-            contentType:'application/json; charset=utf-8',
-            data: JSON.stringify(data)
-        }).done(function() {
-            alert('댓글이 수정되었습니다.');
-            if(data == 1) commentsList(postId);
-        }).fail(function (error) {
-            alert(JSON.stringify(error));
-        });
-    },
-    commentsUpdate : function(commentsId, commentsContent){
-        var a ='';
-
-        a += '<div class="input-group">';
-        a += '<input type="text" class="form-control" name="content_'+commentsId+'" value="'+commentsContent+'"/>';
-        a += '<span class="input-group-btn"><button class="btn btn-default" type="button" onclick="commentsUpdateProc('+commentsId+');">수정</button> </span>';
-        a += '</div>';
-
-        $('.commentsContent'+commentsId).html(a);
-    },
-    commentsDelete : function(commentsId){
-        var id = commentsId;
-        $.ajax({
-            type: 'DELETE',
-            url: '/api/v1/comments/{id}',
-            dataType: 'json',
-            contentType:'application/json; charset=utf-8'
-        }).done(function(){
-            alert('댓글이 삭제되었습니다.');
-            window.location.href = '/'; //리다이렉트로 수정해야됨
-        }).fail(function (error){
-            alert(JSON.stringify(error));
-        });
-    },
-
     comments_save : function(){
         var formData = new FormData();
         formData.append('author', $('#author').val());
@@ -205,6 +161,52 @@ $(".custom-file-input").on("change", function() {
 /*
 21-01-22 댓글 구현 ~
  */
+function commentsUpdateProc(commentsId){
+    var data = {
+        'commentsId': commentsId,
+        'content': $('#content_'+commentsId).val()
+    };
+    var update_content_id = "#content_"+commentsId;
+    alert(update_content_id)
+    alert($(update_content_id).val());
+    var id = commentsId;
+    $.ajax({
+        type: 'PUT',
+        url: '/api/v1/comments/'+id,
+        dataType: 'json',
+        contentType:'application/json; charset=utf-8',
+        data: JSON.stringify(data)
+    }).done(function() {
+        alert('댓글이 수정되었습니다.');
+        commentsList();
+    }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
+}
+function commentsUpdate(commentsId, commentsContent){
+    var a ='';
+    a += '<div class="input-group">';
+    a += '<input type="text" class="form-control" name="content_'+commentsId+'" value="'+commentsContent+'"/>';
+    a += '<span class="input-group-btn"><button class="btn btn-default" type="button" onclick="commentsUpdateProc('+commentsId+');">수정</button> </span>';
+    a += '</div>';
+
+    $('.commentsContent'+commentsId).html(a);
+}
+function commentsDelete(commentsId){
+    var id = commentsId;
+    $.ajax({
+        type: 'DELETE',
+        url: '/api/v1/comments/'+id,
+        dataType: 'json',
+        contentType:'application/json; charset=utf-8'
+    }).done(function(){
+        alert('댓글이 삭제되었습니다.');
+        window.location.reload(); //리다이렉트로 수정해야됨
+    }).fail(function (error){
+        alert(JSON.stringify(error));
+    });
+}
+
 function commentsList(){
     var postId = $('#id').val();
     $.ajax({
