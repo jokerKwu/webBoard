@@ -60,4 +60,8 @@ public class CommentsService {
                 .map(CommentsListResponseDto::new)
                 .collect(Collectors.toList());
     }
+    @Transactional(readOnly = true)
+    public List<CommentsListResponseDto> findByPostId(Long postId) {
+        return commentsRepository.findByPostId(postId).stream().map(CommentsListResponseDto::new).collect(Collectors.toList());
+    }
 }

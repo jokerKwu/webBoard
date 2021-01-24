@@ -164,11 +164,9 @@ $(".custom-file-input").on("change", function() {
 function commentsUpdateProc(commentsId){
     var formData = new FormData();
 
-    alert(commentsId)
     formData.append('commentsId', commentsId);
-    formData.append('update_content',$('#content_1').val());
+    formData.append('update_content',$('#content_'+commentsId).val());
     formData.append('author',$('#author').val());
-    alert($('#content_'+commentsId).val());
     var id = commentsId;
     $.ajax({
         type: 'POST',
@@ -209,6 +207,7 @@ function commentsDelete(commentsId){
 
 function commentsList(){
     var postId = $('#id').val();
+
     $.ajax({
         url : '/api/v1/comments/list',
         type : 'get',

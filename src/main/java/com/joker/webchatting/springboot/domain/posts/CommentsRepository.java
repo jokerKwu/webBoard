@@ -1,5 +1,6 @@
 package com.joker.webchatting.springboot.domain.posts;
 
+import com.joker.webchatting.springboot.web.dto.CommentsListResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -10,4 +11,6 @@ import java.util.List;
 public interface CommentsRepository extends JpaRepository<Comments, Long> {
     @Query("SELECT c FROM Comments c ORDER BY c.id DESC")
     List<Comments> findAllDesc();
+
+    List<Comments> findByPostId(Long postId);
 }

@@ -19,8 +19,9 @@ public class CommentsController {
 
     //댓글 목록 가져오기
     @GetMapping("/api/v1/comments/list")
-    public List<CommentsListResponseDto> findAll(){
-        return commentService.findAllDesc();
+    public List<CommentsListResponseDto> findAll(@RequestParam("postId")Long postId){
+//        return commentService.findAllDesc();
+        return commentService.findByPostId(postId);
     }
 
     //댓글 등록하기
