@@ -162,20 +162,20 @@ $(".custom-file-input").on("change", function() {
 21-01-22 댓글 구현 ~
  */
 function commentsUpdateProc(commentsId){
-    var data = {
-        'commentsId': commentsId,
-        'content': $('#content_'+commentsId).val()
-    };
-    var update_content_id = "#content_"+commentsId;
-    alert(update_content_id)
-    alert($(update_content_id).val());
+    var formData = new FormData();
+
+    alert(commentsId)
+    formData.append('commentsId', commentsId);
+    formData.append('update_content',$('#content_1').val());
+    formData.append('author',$('#author').val());
+    alert($('#content_'+commentsId).val());
     var id = commentsId;
     $.ajax({
-        type: 'PUT',
+        type: 'POST',
         url: '/api/v1/comments/'+id,
-        dataType: 'json',
-        contentType:'application/json; charset=utf-8',
-        data: JSON.stringify(data)
+        processData: false,
+        contentType: false,
+        data: formData,
     }).done(function() {
         alert('댓글이 수정되었습니다.');
         commentsList();
@@ -186,7 +186,7 @@ function commentsUpdateProc(commentsId){
 function commentsUpdate(commentsId, commentsContent){
     var a ='';
     a += '<div class="input-group">';
-    a += '<input type="text" class="form-control" name="content_'+commentsId+'" value="'+commentsContent+'"/>';
+    a += '<input type="text" class="form-control" id="content_'+commentsId+'" name="content_'+commentsId+'" value="'+commentsContent+'"/>';
     a += '<span class="input-group-btn"><button class="btn btn-default" type="button" onclick="commentsUpdateProc('+commentsId+');">수정</button> </span>';
     a += '</div>';
 

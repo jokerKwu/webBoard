@@ -35,7 +35,11 @@ public class CommentsController {
 
     //댓글 수정하기
     @PostMapping("/api/v1/comments/{id}")
-    public Long update(@PathVariable Long id, @RequestBody CommentsUpdateRequestDto requestDto){
+    public Long update(@PathVariable Long id, @RequestParam("commentsId")Long commentsId,@RequestParam("update_content")String update_content ,@RequestParam("author")String author){
+        CommentsUpdateRequestDto requestDto = new CommentsUpdateRequestDto();
+        requestDto.setContent(update_content);
+        requestDto.setPostId(commentsId);
+        requestDto.setAuthor(author);
         return commentService.update(id, requestDto);
     }
 
