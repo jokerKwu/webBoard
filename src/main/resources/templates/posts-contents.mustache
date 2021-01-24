@@ -1,6 +1,6 @@
 {{>layout/header}}
 
-<h1 style="text-align: center;">게시글 수정</h1>
+<h1 style="text-align: center;">게 시 글</h1>
 
 <div class="col-md-12">
     <div class="col-md-10">
@@ -46,24 +46,22 @@
     <!--
     21-01-22 댓글 추가 진행중
     -->
-    <div class="container">
-        <label for="commentsContent">comment</label>
+    <div class="col-md-10">
+        <label for="commentsContent">댓 글</label>
         <form name="commentsForm">
             <div class="input-group">
                 <input type="hidden" name="postId" value={{post.id}}/>
                 <input type="text" class="form-control" id="commentsContent" name="commentsContent" placeholder="내용을 입력하세요.">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" id="btn-comments-save" name="btn-comments-save">등록</button>
+                    <button class="form-control" type="button" id="btn-comments-save" name="btn-comments-save">등록</button>
                </span>
             </div>
         </form>
     </div>
 
-    <div class="container">
+    <div class="col-md-10">
         <div class="commentsList"></div>
     </div>
 </div>
-
-
 
 {{>layout/footer}}
