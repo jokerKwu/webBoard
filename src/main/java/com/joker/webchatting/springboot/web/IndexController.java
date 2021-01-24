@@ -90,8 +90,8 @@ public class IndexController {
     }
 
     @GetMapping("/post/search")
-    public String search(@RequestParam(value="keyword")String keyword, Model model, @LoginUser SessionUser user){
-        List<PostDto> postDtoList = postsService.searchPosts(keyword);
+    public String search(@RequestParam("searchOption") String searchOption, @RequestParam("keyword")String keyword, Model model, @LoginUser SessionUser user){
+        List<PostDto> postDtoList = postsService.searchPosts(searchOption,keyword);
         model.addAttribute("name",user.getName());
         model.addAttribute("posts", postDtoList);
         model.addAttribute("same",user.getName());
@@ -102,7 +102,6 @@ public class IndexController {
     public String postView(@PageableDefault Pageable pageable, Model model){
         Page<Posts> postList = postsService.getPostList(pageable);
         model.addAttribute("posts",postList);
-
         System.out.println("총 엘리먼트 수   : "+ postList.getTotalElements());
         System.out.println("전체 페이지 수   : "+ postList.getTotalPages());
         System.out.println("페이지에 표시할 엘리먼트 수    : "+ postList.getSize());

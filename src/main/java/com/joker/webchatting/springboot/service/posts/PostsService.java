@@ -68,7 +68,6 @@ public class PostsService {
         //Posts posts = postsRepository.findById(id).get();
         Posts entity = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
-
         return new PostsResponseDto(entity);
     }
 
@@ -80,15 +79,25 @@ public class PostsService {
     }
     //키워드 검색
     @Transactional
-    public List<PostDto> searchPosts(String keyword) {
-        List<Posts> postEntities = postsRepository.findByTitleContaining(keyword);
+    public List<PostDto> searchPosts(String searchOption, String keyword) {
         List<PostDto> postDtoList = new ArrayList<>();
+        List<Posts> postEntities = new ArrayList<>();
+        if(searchOption.equals("title")) {
+            postEntities = postsRepository.findByTitleContaining(keyword);
 
-        if(postEntities.isEmpty()) return postDtoList;
+        }else if(searchOption.equals("content")){
+            postEntities = postsRepository.findByContentContaining(keyword);
 
-        for(Posts postEntity : postEntities){
+        }else if(searchOption.equals("all")){
+            postEntities = postsRepository.findAllByContentContainingOrTitleContaining(keyword,keyword);
+        }else if(searchOption.equals("author")){
+            postEntities = postsRepository.findByAuthorContaining(keyword);
+        }
+        if (postEntities.isEmpty()) return postDtoList;
+        for (Posts postEntity : postEntities) {
             postDtoList.add(this.convertEntityToDto(postEntity));
         }
+
         return postDtoList;
     }
 
