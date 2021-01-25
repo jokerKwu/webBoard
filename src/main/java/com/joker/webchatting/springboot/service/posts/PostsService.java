@@ -162,7 +162,7 @@ public class PostsService {
 
 
 
-        pageable = PageRequest.of(page, 5,Sort.Direction.DESC,"id");
+        pageable = PageRequest.of(page, 10,Sort.Direction.DESC,"id");
 
         return postsRepository.findAll(pageable);
     }
