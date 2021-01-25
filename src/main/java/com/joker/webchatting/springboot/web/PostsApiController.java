@@ -62,7 +62,7 @@ public class PostsApiController {
                         e.getStackTrace();
                     }
                 }
-                String filePath = savePath + "\\" + filename;
+                String filePath = savePath + "/" + filename;
                 multipartFile.transferTo(new File(filePath));
                 FileDto fileDto = new FileDto();
                 fileDto.setOrigFilename(origFilename);
