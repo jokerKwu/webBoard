@@ -159,7 +159,10 @@ public class PostsService {
 
     public Page<Posts> getPostList(Pageable pageable){
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, 5);
+
+
+
+        pageable = PageRequest.of(page, 5,Sort.Direction.DESC,"id");
 
         return postsRepository.findAll(pageable);
     }

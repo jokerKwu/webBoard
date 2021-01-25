@@ -33,9 +33,6 @@ public class IndexController {
     @GetMapping("/")
     public String index(Model model ,@PageableDefault Pageable pageable, @LoginUser SessionUser user) {
 
-        model.addAttribute("posts", postsService.findAllDesc());
-
-
         Page<Posts> postList = postsService.getPostList(pageable);
         model.addAttribute("posts",postList);
         System.out.println("총 엘리먼트 수   : "+ postList.getTotalElements());
