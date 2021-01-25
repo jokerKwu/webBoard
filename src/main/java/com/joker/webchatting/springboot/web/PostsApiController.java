@@ -35,6 +35,7 @@ public class PostsApiController {
     public void uploadAjaxPost(@RequestParam("uploadFile") MultipartFile[] files, @RequestParam("title")String title, @RequestParam("author")String author, @RequestParam("content")String content ) {
         //윈도우
         //String savePath = "C:\\upload";//실행되는 위치의 files 폴더에 파일이 저장된다.
+        //리눅스
         String savePath = "/home/ec2-user/app/step1/upload";//실행되는 위치의 files 폴더에 파일이 저장된다.
 
         PostsSaveRequestDto requestDto = new PostsSaveRequestDto();
@@ -62,7 +63,10 @@ public class PostsApiController {
                         e.getStackTrace();
                     }
                 }
+                //윈도우
                 String filePath = savePath + "/" + filename;
+                //리눅스
+                //String filePath = savePath + "/" + filename;
                 multipartFile.transferTo(new File(filePath));
                 FileDto fileDto = new FileDto();
                 fileDto.setOrigFilename(origFilename);
