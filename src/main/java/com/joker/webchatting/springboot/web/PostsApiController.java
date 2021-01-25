@@ -33,7 +33,10 @@ public class PostsApiController {
 
     @PostMapping("/api/v1/fileUpload")
     public void uploadAjaxPost(@RequestParam("uploadFile") MultipartFile[] files, @RequestParam("title")String title, @RequestParam("author")String author, @RequestParam("content")String content ) {
-        String savePath = "C:\\upload";//실행되는 위치의 files 폴더에 파일이 저장된다.
+        //윈도우
+        //String savePath = "C:\\upload";//실행되는 위치의 files 폴더에 파일이 저장된다.
+        String savePath = "/home/ec2-user/app/step1/upload";//실행되는 위치의 files 폴더에 파일이 저장된다.
+
         PostsSaveRequestDto requestDto = new PostsSaveRequestDto();
         requestDto.setTitle(title);
         requestDto.setAuthor(author);
