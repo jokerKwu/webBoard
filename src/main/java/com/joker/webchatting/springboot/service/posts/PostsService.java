@@ -83,15 +83,15 @@ public class PostsService {
         List<PostDto> postDtoList = new ArrayList<>();
         List<Posts> postEntities = new ArrayList<>();
         if(searchOption.equals("title")) {
-            postEntities = postsRepository.findByTitleContaining(keyword);
+            postEntities = postsRepository.findByTitleContainingIgnoreCase(keyword);
 
         }else if(searchOption.equals("content")){
-            postEntities = postsRepository.findByContentContaining(keyword);
+            postEntities = postsRepository.findByContentContainingIgnoreCase(keyword);
 
         }else if(searchOption.equals("all")){
-            postEntities = postsRepository.findAllByContentContainingOrTitleContaining(keyword,keyword);
+            postEntities = postsRepository.findAllByContentContainingIgnoreCaseOrTitleContainingIgnoreCase(keyword,keyword);
         }else if(searchOption.equals("author")){
-            postEntities = postsRepository.findByAuthorContaining(keyword);
+            postEntities = postsRepository.findByAuthorContainingIgnoreCase(keyword);
         }
         if (postEntities.isEmpty()) return postDtoList;
         for (Posts postEntity : postEntities) {
