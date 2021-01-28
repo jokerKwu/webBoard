@@ -1,5 +1,7 @@
 package com.joker.webchatting.springboot.web;
 
+import com.joker.webchatting.springboot.config.auth.LoginUser;
+import com.joker.webchatting.springboot.config.auth.dto.SessionUser;
 import com.joker.webchatting.springboot.service.posts.CommentsService;
 import com.joker.webchatting.springboot.web.dto.CommentsListResponseDto;
 import com.joker.webchatting.springboot.web.dto.CommentsRequestDto;
@@ -26,9 +28,9 @@ public class CommentsController {
 
     //댓글 등록하기
     @PostMapping("/api/v1/comments")
-    public Long save(@RequestParam("postId")Long postId, @RequestParam("author")String author, @RequestParam("commentsContent")String content){
+    public Long save(@RequestParam("postId")Long postId, @RequestParam("author")String author, @RequestParam("commentsContent")String content, @LoginUser SessionUser user){
         CommentsSaveRequestDto requestDto = new CommentsSaveRequestDto();
-        requestDto.setAuthor(author);
+        requestDto.setAuthor(user.getName());
         requestDto.setContent(content);
         requestDto.setPostId(postId);
         return commentService.save(requestDto);
@@ -36,11 +38,11 @@ public class CommentsController {
 
     //댓글 수정하기
     @PostMapping("/api/v1/comments/{id}")
-    public Long update(@PathVariable Long id, @RequestParam("commentsId")Long commentsId,@RequestParam("update_content")String update_content ,@RequestParam("author")String author){
+    public Long update(@PathVariable Long id, @LoginUser SessionUser user, @RequestParam("commentsId")Long commentsId,@RequestParam("update_content")String update_content ,@RequestParam("author")String author){
         CommentsUpdateRequestDto requestDto = new CommentsUpdateRequestDto();
         requestDto.setContent(update_content);
         requestDto.setPostId(commentsId);
-        requestDto.setAuthor(author);
+        requestDto.setAuthor(user.getName());
         return commentService.update(id, requestDto);
     }
 
