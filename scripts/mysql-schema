@@ -28,7 +28,7 @@ create table comments (
     primary key (id)) engine=InnoDB;
 
 create table file (
-    id bigint not null,
+    id bigint not null auto_increment,
     file_path varchar(255) not null,
     filename varchar(255) not null,
     orig_filename varchar(255) not null,

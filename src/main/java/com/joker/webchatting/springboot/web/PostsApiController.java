@@ -64,15 +64,14 @@ public class PostsApiController {
                     }
                 }
                 //윈도우
-                String filePath = savePath + "/" + filename;
+                //String filePath = savePath + "\\" + filename;
                 //리눅스
-                //String filePath = savePath + "/" + filename;
+                String filePath = savePath + "/" + filename;
                 multipartFile.transferTo(new File(filePath));
                 FileDto fileDto = new FileDto();
                 fileDto.setOrigFilename(origFilename);
                 fileDto.setFilename(filename);
                 fileDto.setFilePath(filePath);
-
                 Long fileId = fileService.saveFile(fileDto);
                 requestDto.setFileId(fileId);
             } catch (Exception e) {
