@@ -76,7 +76,7 @@ var main = {
         }
         formData.append('title', $('#title').val());
         formData.append('author',$('#author').val());
-        formData.append('content',$('#commentsContent').val());
+        formData.append('content',$('#content').val());
         var id = $('#id').val();
         $.ajax({
             type: 'POST',

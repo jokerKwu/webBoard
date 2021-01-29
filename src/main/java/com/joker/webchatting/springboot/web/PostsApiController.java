@@ -111,7 +111,6 @@ public class PostsApiController {
         requestDto.setTitle(title);
         requestDto.setContent(content);
 
-
         for(MultipartFile multipartFile : files) {
             System.out.println("---------------------------------");
             System.out.println("Upload File Name :" + multipartFile.getOriginalFilename());
