@@ -29,6 +29,7 @@ var main = {
         formData.append('title', $('#title').val());
         formData.append('author',$('#author').val());
         formData.append('content',$('#content').val());
+        formData.append('type',$('#type').val());
 
         $.ajax({
             type: 'POST',
@@ -50,7 +51,8 @@ var main = {
 
         var data = {
             title: $('#title').val(),
-            content: $('#content').val()
+            content: $('#content').val(),
+            type:$('#type').val()
         };
         var id = $('#id').val();
 
@@ -77,6 +79,8 @@ var main = {
         formData.append('title', $('#title').val());
         formData.append('author',$('#author').val());
         formData.append('content',$('#content').val());
+        formData.append('type',$('#type').val());
+
         var id = $('#id').val();
         $.ajax({
             type: 'POST',

@@ -12,5 +12,6 @@ public interface PostsRepository extends JpaRepository<Posts,Long> {
     List<Posts> findByTitleContainingIgnoreCase(String keyword);          //제목
     List<Posts> findByContentContainingIgnoreCase(String keyword);        //내용
     List<Posts> findByAuthorContainingIgnoreCase(String keyword);          //작성자
+    List<Posts> findByTypeContaining(String keyword);
     List<Posts> findAllByContentContainingIgnoreCaseOrTitleContainingIgnoreCase(String keyword1,String keyword2); //제목 + 내용
 }

@@ -12,6 +12,7 @@ public class PostsListResponseDto {
     private Long fileId;
     private String filename;
     private LocalDateTime modifiedDate;
+    private String type;
 
     public PostsListResponseDto(Posts entity) {
         this.id = entity.getId();
@@ -20,5 +21,6 @@ public class PostsListResponseDto {
         this.fileId = entity.getFileId();
         this.filename = entity.getFilename();
         this.modifiedDate = entity.getModifiedDate();
+        this.type = entity.getType();
     }
 }
