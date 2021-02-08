@@ -101,10 +101,8 @@ public class PostsService {
         for (Posts postEntity : postEntities) {
             postDtoList.add(this.convertEntityToDto(postEntity));
         }
-
         return postDtoList;
     }
-
     private PostDto convertEntityToDto(Posts postEntity){
         return PostDto.builder()
                 .author(postEntity.getAuthor())
