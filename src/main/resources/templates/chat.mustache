@@ -1,12 +1,37 @@
 {{>layout/chatHeader}}
-
-<h1> 익명 채팅 </h1>
-<a href="/" role="button" class="btn btn-outline-primary">나가기</a>
-<div id="main-content" class="container">
-    <div class="row">
-        <textarea id="chat-content" rows="30" style="width:100%;" readonly></textarea>
+<div id="username-page">
+    <div class="username-page-container">
+        <h3 class="title">username을 입력하세요</h3>
+        <form id="usernameForm" name="usernameForm">
+            <div class="form-group">
+                <input type="text" id="name" placeholder="Username" autocomplete="off" class="form-control" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="accent username-submit">채팅 시작하기</button>
+            </div>
+        </form>
     </div>
-    <div class="row" id="chat-action-div"></div>
 </div>
 
+<div id="chat-page" class="hidden">
+    <div class="chat-container">
+        <div class="chat-header">
+            <h4>채팅창</h4>
+        </div>
+        <div class="connecting">
+            연결중...
+        </div>
+        <ul id="messageArea">
+
+        </ul>
+        <form id="messageForm" name="messageForm">
+            <div class="form-group">
+                <div class="input-group clearfix">
+                    <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
+                    <button type="submit" class="primary">보내기</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 {{>layout/chatFooter}}

@@ -7,7 +7,7 @@
             {{#name}}
                 <span id="user">{{name}}</span>  접속 중
                 <a href="/posts/save" role="button" class="btn btn-outline-primary">글 등록</a>
-                <a href="/chat" class="btn btn-outline-primary">채팅방 입장</a>
+                <a href="/post/chat" class="btn btn-outline-primary">채팅방 입장</a>
                 <a href="/logout" class="btn btn-outline-danger" role="button">로그아웃</a>
             {{/name}}
             {{^name}}
@@ -22,6 +22,7 @@
         <thead class="thead-light">
         <tr>
             <th scope="col">게시글번호</th>
+            <th scope="col">타입</th>
             <th scope="col">제목</th>
             <th scope="col">작성자</th>
             <th scope="col">최종수정일</th>
@@ -31,6 +32,7 @@
         {{#posts}}
             <tr>
                 <td>{{id}}</td>
+                <td>{{type}}</td>
                 <td><a href="/posts/contents/{{id}}">{{title}}</a></td>
                 <td>{{author}}</td>
                 <td>{{modifiedDate}}</td>

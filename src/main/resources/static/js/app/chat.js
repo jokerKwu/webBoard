@@ -1,186 +1,116 @@
+var usernamePage = document.querySelector('#username-page');
+var chatPage = document.querySelector('#chat-page');
+var usernameForm = document.querySelector('#usernameForm');
+var messageForm = document.querySelector('#messageForm');
+var messageInput = document.querySelector('#message');
+var messageArea = document.querySelector('#messageArea');
+var connectingElement = document.querySelector('.connecting');
 
-$(function () {
+var stompClient = null;
+var username = null;
+
+var colors = [
+    '#2196F3', '#32c787', '#00BCD4', '#ff5652',
+    '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
+];
+
+function connect(event) {
+    username = document.querySelector('#name').value.trim();
+
+    if(username) {
+        usernamePage.classList.add('hidden');
+        chatPage.classList.remove('hidden');
+
+        var socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, onConnected, onError);
+    }
+    event.preventDefault();
+}
 
 
+function onConnected() {
+    // Subscribe to the Public Topic
+    stompClient.subscribe('/topic/public', onMessageReceived);
 
-    var ChatManager = (function () {
-        function ChatManager() {
-        }
+    // Tell your username to the server
+    stompClient.send("/app/chat.addUser",
+        {},
+        JSON.stringify({sender: username, type: 'JOIN'})
+    )
 
-        ChatManager.textarea = $('#chat-content');
-        ChatManager.socket = null;
-        ChatManager.stompClient = null;
-        ChatManager.sessionId = null;
-        ChatManager.chatRoomId = null;
-        ChatManager.joinInterval = null;
+    connectingElement.classList.add('hidden');
+}
 
-        ChatManager.join = function () {
-            $.ajax({
-                url       : 'join',
-                headers   : {
-                    "Content-Type": "application/json"
-                },
-                beforeSend: function () {
-                    $('#btnJoin').text('Cancel');
-                    ChatManager.updateText('waiting anonymous user', false);
-                    ChatManager.joinInterval = setInterval(function () {
-                        ChatManager.updateText('.', true);
-                    }, 1000);
-                },
-                success   : function (chatResponse) {
-                    console.log('Success to receive join result. \n', chatResponse);
-                    if (!chatResponse) {
-                        return;
-                    }
 
-                    clearInterval(ChatManager.joinInterval);
-                    if (chatResponse.responseResult == 'SUCCESS') {
-                        ChatManager.sessionId = chatResponse.sessionId;
-                        ChatManager.chatRoomId = chatResponse.chatRoomId;
-                        ChatManager.updateTemplate('chat');
-                        ChatManager.updateText('>> Connected anonymous user :)\n', false);
-                        ChatManager.connectAndSubscribe();
-                    } else if (chatResponse.responseResult == 'CANCEL') {
-                        ChatManager.updateText('>> Success to cancel', false);
-                        $('#btnJoin').text('Join');
-                    } else if (chatResponse.responseResult == 'TIMEOUT') {
-                        ChatManager.updateText('>> Can`t find user :(', false);
-                        $('#btnJoin').text('Join');
-                    }
-                },
-                error     : function (jqxhr) {
-                    clearInterval(ChatManager.joinInterval);
-                    if (jqxhr.status == 503) {
-                        ChatManager.updateText('\n>>> Failed to connect some user :(\nPlz try again', true);
-                    } else {
-                        ChatManager.updateText(jqxhr, true);
-                    }
-                    console.log(jqxhr);
-                },
-                complete  : function () {
-                    clearInterval(ChatManager.joinInterval);
-                }
-            })
+function onError(error) {
+    connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
+    connectingElement.style.color = 'red';
+}
+
+
+function sendMessage(event) {
+    var messageContent = messageInput.value.trim();
+    if(messageContent && stompClient) {
+        var chatMessage = {
+            sender: username,
+            content: messageInput.value,
+            type: 'CHAT'
         };
+        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        messageInput.value = '';
+    }
+    event.preventDefault();
+}
 
-        ChatManager.cancel = function () {
-            $.ajax({
-                url     : 'cancel',
-                headers : {
-                    "Content-Type": "application/json"
-                },
-                success : function () {
-                    ChatManager.updateText('', false);
-                },
-                error   : function (jqxhr) {
-                    console.log(jqxhr);
-                    alert('Error occur. please refresh');
-                },
-                complete: function () {
-                    clearInterval(ChatManager.joinInterval);
-                }
-            })
-        };
 
-        ChatManager.connectAndSubscribe = function () {
-            if (ChatManager.stompClient == null || !ChatManager.stompClient.connected) {
-                var socket = new SockJS('/chat-websocket');
-                ChatManager.stompClient = Stomp.over(socket);
-                ChatManager.stompClient.connect({chatRoomId: ChatManager.chatRoomId}, function (frame) {
-                    console.log('Connected: ' + frame);
-                    ChatManager.subscribeMessage();
-                });
-            } else {
-                ChatManager.subscribeMessage();
-            }
-        };
+function onMessageReceived(payload) {
+    var message = JSON.parse(payload.body);
 
-        ChatManager.disconnect = function () {
-            if (ChatManager.stompClient !== null) {
-                ChatManager.stompClient.disconnect();
-                ChatManager.stompClient = null;
-                ChatManager.updateTemplate('wait');
-            }
-        };
+    var messageElement = document.createElement('li');
 
-        ChatManager.sendMessage = function () {
-            console.log('Check.. >>\n', ChatManager.stompClient);
-            console.log('send message.. >> ');
-            var $chatTarget = $('#chat-message-input');
-            var message = $chatTarget.val();
-            $chatTarget.val('');
+    if(message.type === 'JOIN') {
+        messageElement.classList.add('event-message');
+        message.content = message.sender + ' joined!';
+    } else if (message.type === 'LEAVE') {
+        messageElement.classList.add('event-message');
+        message.content = message.sender + ' left!';
+    } else {
+        messageElement.classList.add('chat-message');
 
-            var payload = {
-                messageType    : 'CHAT',
-                senderSessionId: ChatManager.sessionId,
-                message        : message
-            };
+        var avatarElement = document.createElement('i');
+        var avatarText = document.createTextNode(message.sender[0]);
+        avatarElement.appendChild(avatarText);
+        avatarElement.style['background-color'] = getAvatarColor(message.sender);
 
-            ChatManager.stompClient.send('/app/chat.message/' + ChatManager.chatRoomId, {}, JSON.stringify(payload));
-        };
+        messageElement.appendChild(avatarElement);
 
-        ChatManager.subscribeMessage = function () {
-            ChatManager.stompClient.subscribe('/topic/chat/' + ChatManager.chatRoomId, function (resultObj) {
-                console.log('>> success to receive message\n', resultObj.body);
-                var result = JSON.parse(resultObj.body);
-                var message = '';
+        var usernameElement = document.createElement('span');
+        var usernameText = document.createTextNode(message.sender);
+        usernameElement.appendChild(usernameText);
+        messageElement.appendChild(usernameElement);
+    }
 
-                if (result.messageType == 'CHAT') {
-                    if (result.senderSessionId === ChatManager.sessionId) {
-                        message += '[나] : ';
-                    } else {
-                        message += '[상대방] : ';
-                    }
+    var textElement = document.createElement('p');
+    var messageText = document.createTextNode(message.content);
+    textElement.appendChild(messageText);
 
-                    message += result.message + '\n';
-                } else if (result.messageType == 'DISCONNECTED') {
-                    message = '>> Disconnected user :(';
-                    ChatManager.disconnect();
-                }
-                ChatManager.updateText(message, true);
-            });
-        };
+    messageElement.appendChild(textElement);
 
-        ChatManager.updateTemplate = function (type) {
-            var source;
-            if (type == 'wait') {
-                source = $('#wait-chat-template').html();
-            } else if (type == 'chat') {
-                source = $('#send-chat-template').html();
-            } else {
-                console.log('invalid type : ' + type);
-                return;
-            }
-            var template = Handlebars.compile(source);
-            var $target = $('#chat-action-div');
-            $target.empty();
-            $target.append(template({}));
-        };
+    messageArea.appendChild(messageElement);
+    messageArea.scrollTop = messageArea.scrollHeight;
+}
 
-        ChatManager.updateText = function (message, append) {
-            if (append) {
-                ChatManager.textarea.val(ChatManager.textarea.val() + message);
-            } else {
-                ChatManager.textarea.val(message);
-            }
-        };
 
-        return ChatManager;
-    }());
+function getAvatarColor(messageSender) {
+    var hash = 0;
+    for (var i = 0; i < messageSender.length; i++) {
+        hash = 31 * hash + messageSender.charCodeAt(i);
+    }
+    var index = Math.abs(hash % colors.length);
+    return colors[index];
+}
 
-    $(document).on('click', '#btnJoin', function () {
-        var type = $(this).text();
-        if (type == 'Join') {
-            ChatManager.join();
-        } else if (type == 'Cancel') {
-            ChatManager.cancel();
-        }
-    });
-
-    $(document).on('click', '#btnSend', function () {
-        ChatManager.sendMessage();
-    });
-
-    ChatManager.updateTemplate('wait');
-});
-
+usernameForm.addEventListener('submit', connect, true)
+messageForm.addEventListener('submit', sendMessage, true)

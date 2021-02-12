@@ -54,6 +54,9 @@ dependencies {
     compile("com.googlecode.json-simple:json-simple:1.1.1")
     compile("com.google.code.gson:gson:2.8.0")
 
+    
+    //2021 - 02 - 08 일라스틱 서치
+    compile("org.springframework.boot:spring-boot-starter-data-elasticsearch")
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
     annotationProcessor('org.projectlombok:lombok')

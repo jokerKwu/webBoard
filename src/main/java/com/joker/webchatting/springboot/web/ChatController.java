@@ -1,39 +1,26 @@
 package com.joker.webchatting.springboot.web;
 
-import com.joker.webchatting.springboot.config.auth.LoginUser;
-import com.joker.webchatting.springboot.config.auth.dto.SessionUser;
-import com.joker.webchatting.springboot.domain.chat.*;
-import com.joker.webchatting.springboot.service.chat.ChatService;
-import com.joker.webchatting.springboot.util.ServletUtil;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
+import com.joker.webchatting.springboot.domain.chat.ChatMessage;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.async.DeferredResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 
-import java.util.List;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 
-@RequiredArgsConstructor
-@RestController
-@RequestMapping("/chat")
+@Controller
 public class ChatController {
-    private final ChatService chatService;
 
-    @PostMapping
-    public ChatRoom createRoom(@RequestParam String name){
-        return chatService.createRoom(name);
+    @MessageMapping("/chat.sendMessage")
+    @SendTo("/topic/public")
+    public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
+        return chatMessage;
     }
 
-    @GetMapping
-    public List<ChatRoom> findAllRoom(){
-        return chatService.findAllRoom();
+    @MessageMapping("/chat.addUser")
+    @SendTo("/topic/public")
+    public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor){
+        headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
+        return chatMessage;
     }
 }

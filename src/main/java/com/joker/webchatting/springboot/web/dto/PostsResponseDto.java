@@ -12,6 +12,7 @@ public class PostsResponseDto {
     private Long fileId;
     private String filename;
     private String author;
+    private String type;
 
     public PostsResponseDto(Posts entity) {
         this.id = entity.getId();
@@ -20,5 +21,6 @@ public class PostsResponseDto {
         this.fileId = entity.getFileId();
         this.author = entity.getAuthor();
         this.filename = entity.getFilename();
+        this.type = entity.getType();
     }
 }

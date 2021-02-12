@@ -36,6 +36,7 @@ public class PostsService {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .fileId(post.getFileId())
+                .type(post.getType())
                 .build();
         return postDto;
     }
@@ -50,7 +51,7 @@ public class PostsService {
         Posts posts = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
 
-        posts.update(requestDto.getTitle(), requestDto.getContent(),requestDto.getFileId(),requestDto.getFilename());
+        posts.update(requestDto.getTitle(), requestDto.getContent(),requestDto.getFileId(),requestDto.getFilename(),requestDto.getType());
 
         return id;
     }
@@ -93,14 +94,15 @@ public class PostsService {
         }else if(searchOption.equals("author")){
             postEntities = postsRepository.findByAuthorContainingIgnoreCase(keyword);
         }
+        else if (searchOption.equals("type")){
+            postEntities = postsRepository.findByTypeContaining(keyword);
+        }
         if (postEntities.isEmpty()) return postDtoList;
         for (Posts postEntity : postEntities) {
             postDtoList.add(this.convertEntityToDto(postEntity));
         }
-
         return postDtoList;
     }
-
     private PostDto convertEntityToDto(Posts postEntity){
         return PostDto.builder()
                 .author(postEntity.getAuthor())
@@ -108,6 +110,7 @@ public class PostsService {
                 .modifiedDate(postEntity.getModifiedDate())
                 .id(postEntity.getId())
                 .fileId(postEntity.getFileId())
+                .type(postEntity.getType())
                 .build();
     }
     //페이지 번호 추가
@@ -159,9 +162,6 @@ public class PostsService {
 
     public Page<Posts> getPostList(Pageable pageable){
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-
-
-
         pageable = PageRequest.of(page, 10,Sort.Direction.DESC,"id");
 
         return postsRepository.findAll(pageable);

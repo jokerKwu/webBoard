@@ -13,12 +13,14 @@ public class PostsUpdateRequestDto {
     private String content;
     private Long fileId;
     private String filename;
+    private String type;
 
     @Builder
-    public PostsUpdateRequestDto(String title, String content, Long fileId, String filename) {
+    public PostsUpdateRequestDto(String title, String content, Long fileId, String filename,String type) {
         this.title = title;
         this.content = content;
         this.fileId = fileId;
         this.filename = filename;
+        this.type = type;
     }
 }

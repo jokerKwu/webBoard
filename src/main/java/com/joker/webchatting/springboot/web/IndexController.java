@@ -35,11 +35,11 @@ public class IndexController {
 
         Page<Posts> postList = postsService.getPostList(pageable);
         model.addAttribute("posts",postList);
+
         System.out.println("총 엘리먼트 수   : "+ postList.getTotalElements());
         System.out.println("전체 페이지 수   : "+ postList.getTotalPages());
         System.out.println("페이지에 표시할 엘리먼트 수    : "+ postList.getSize());
         System.out.println("현재 페이지 인덱스   : "+ postList.getNumber());
-
         List<Integer> pages = new ArrayList<>();
         for(int i=0;i<postList.getTotalPages();i++){
             Integer num = new Integer(i+1);
@@ -80,9 +80,10 @@ public class IndexController {
         return "posts-update";
     }
 
-    @GetMapping("/posts/chat")
+    @GetMapping("/post/chat")
     public String chat(Model model,@LoginUser SessionUser user){
         model.addAttribute("user",user.getName());
+
         return "chat";
     }
 
