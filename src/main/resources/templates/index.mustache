@@ -1,11 +1,10 @@
 {{>layout/header}}
 
 <div class="col-md-12">
-    <div class="row" style="justify-content:flex-end; margin-left:100px; margin-right:0px">
-        <div class="col-md-6">
-
+    <div class="row login-container">
+        <div class="col-md-6 login-form">
             {{#name}}
-                <span id="user">{{name}}</span>  접속 중
+                <p><span id="user">{{name}} 접속 중</span></p>
                 <a href="/posts/save" role="button" class="btn btn-outline-primary">글 등록</a>
                 <a href="/post/chat" class="btn btn-outline-primary">채팅방 입장</a>
                 <a href="/logout" class="btn btn-outline-danger" role="button">로그아웃</a>
