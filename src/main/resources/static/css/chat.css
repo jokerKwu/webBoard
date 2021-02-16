@@ -173,7 +173,7 @@ button.accent {
     border-bottom: 1px solid #f4f4f4;
 }
 
-#chat-page ul li p {
+#chat-page ul li pre {
     margin: 0;
 }
 
@@ -183,7 +183,7 @@ button.accent {
     clear: both;
 }
 
-#chat-page .event-message p {
+#chat-page .event-message pre {
     color: #777;
     font-size: 14px;
     word-wrap: break-word;
@@ -216,7 +216,7 @@ button.accent {
     font-weight: 600;
 }
 
-#chat-page .chat-message p {
+#chat-page .chat-message pre {
     color: #43464b;
 }
 

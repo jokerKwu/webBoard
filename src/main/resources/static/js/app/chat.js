@@ -14,19 +14,14 @@ var colors = [
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0',
 ];
 
-function connect(event) {
-    username = document.querySelector('#name').value.trim();
-
+function connect() {
+    username = 'me';
     if(username) {
-        usernamePage.classList.add('hidden');
-        chatPage.classList.remove('hidden');
-
         var socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, onConnected, onError);
     }
-    event.preventDefault();
 }
 
 
@@ -57,8 +52,6 @@ function sendMessage(event) {
             content: messageInput.value,
             type: 'CHAT'
         };
-
-
         var messageElement = document.createElement('li');
 
         if(message.type === 'JOIN') {
@@ -83,7 +76,7 @@ function sendMessage(event) {
             messageElement.appendChild(usernameElement);
         }
 
-        var textElement = document.createElement('p');
+        var textElement = document.createElement('pre');
         var messageText = document.createTextNode(message.content);
         textElement.appendChild(messageText);
 
@@ -91,8 +84,6 @@ function sendMessage(event) {
 
         messageArea.appendChild(messageElement);
         messageArea.scrollTop = messageArea.scrollHeight;
-
-
 
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(message));
         messageInput.value = '';
@@ -134,7 +125,7 @@ function onMessageReceived(payload) {
         messageElement.appendChild(usernameElement);
     }
 
-    var textElement = document.createElement('p');
+    var textElement = document.createElement('pre');
     var messageText = document.createTextNode(message.content);
     textElement.appendChild(messageText);
 
@@ -153,7 +144,6 @@ function getAvatarColor(messageSender) {
     var index = Math.abs(hash % (colors.length-1));
     return colors[index];
 }
-
-usernameForm.addEventListener('submit', connect, true)
+connect();
 messageForm.addEventListener('submit', sendMessage, true)
 
