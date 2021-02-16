@@ -36,6 +36,15 @@ function onConnected() {
     )
 
     connectingElement.classList.add('hidden');
+    let btn = document.getElementById('sndBtn');
+    btn.disabled = false;
+    //여기에 환영메시지 추가해주면 되겠다
+    let chatBotMessage = {
+        sender: username,
+        content: '안녕하세요 eCross 봇입니다. 무엇이든 물어보세요.',
+        type: 'CHAT'
+    };
+    botMessage(chatBotMessage);
 }
 
 
@@ -98,9 +107,9 @@ function onMessageReceived(payload) {
         content: payload.body.toString(),
         type: 'CHAT'
     };
-    var message = chatBotMessage;
-    console.log(message);
-
+    botMessage(chatBotMessage);
+}
+function botMessage(message){
     var messageElement = document.createElement('li');
 
     if(message.type === 'JOIN') {
@@ -134,7 +143,6 @@ function onMessageReceived(payload) {
     messageArea.appendChild(messageElement);
     messageArea.scrollTop = messageArea.scrollHeight;
 }
-
 
 function getAvatarColor(messageSender) {
     var hash = 0;
