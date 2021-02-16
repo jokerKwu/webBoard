@@ -110,7 +110,7 @@ function onMessageReceived(payload) {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' left!';
     } else {
-        messageElement.classList.add('chat-message');
+        messageElement.classList.add('bot-message');
 
         var avatarElement = document.createElement('i');
         var avatarText = document.createTextNode('Bot');
