@@ -1,8 +1,49 @@
+<!--
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+-->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<!--index.js 추가-->
 <script src="/js/app/index.js"></script>
+
+<link href="/js/sm/summernote.css" rel="stylesheet">
+<script src="/js/sm/summernote.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            height: 300,
+            minHeight: null,
+            maxHeight: null,
+            focus: true,
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    for (var i = files.length - 1; i >= 0; i--) {
+                        sendFile(files[i], this);
+                    }
+                }
+            }
+        });
+    });
+
+    function sendFile(file, el) {
+        var form_data = new FormData();
+        form_data.append('file', file);
+        $.ajax({
+            data: form_data,
+            type: "POST",
+            url: '/image',
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: function(url) {
+                $(el).summernote('editor.insertImage', url);
+                $('#imageBoard > ul').append('<li><img src="'+url+'" width="480" height="auto"/></li>');
+            }
+        });
+    }
+
+</script>
 </body>
 </html>
