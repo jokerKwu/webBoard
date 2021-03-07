@@ -10,7 +10,6 @@ http://ec2-18-188-3-232.us-east-2.compute.amazonaws.com:8080/
  Date | Content 
   ---|:---:
    2021-03-05 | [ JPA ](https://github.com/jokerKwu/webBoard/blob/master/study/JPA.md)
-   2021-03-05 | [ JPA ](https://github.com/jokerKwu/webBoard/blob/master/study/JPA.md)
    
    
    
