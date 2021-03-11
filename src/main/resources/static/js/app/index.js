@@ -6,7 +6,7 @@ var main = {
         });
 
         $('#btn-update').on('click',function(){
-           _this.update_t();
+           _this.update();
         });
 
         $('#btn-delete').on('click', function () {
@@ -28,7 +28,7 @@ var main = {
         }
         formData.append('title', $('#title').val());
         formData.append('author',$('#author').val());
-        formData.append('content',$('#content').val());
+        formData.append('content',$('#summernote').val());
         formData.append('type',$('#type').val());
 
         $.ajax({
@@ -47,29 +47,7 @@ var main = {
             alert(JSON.stringify(error));
         });
     },
-    update : function () {
-
-        var data = {
-            title: $('#title').val(),
-            content: $('#content').val(),
-            type:$('#type').val()
-        };
-        var id = $('#id').val();
-
-        $.ajax({
-            type: 'PUT',
-            url: '/api/v1/posts/'+id,
-            dataType: 'json',
-            contentType:'application/json; charset=utf-8',
-            data: JSON.stringify(data)
-        }).done(function() {
-            alert('글이 수정되었습니다.');
-            window.location.href = '/';
-        }).fail(function (error) {
-            alert(JSON.stringify(error));
-        });
-    },
-    update_t : function(){
+    update : function(){
         var formData = new FormData();
         var inputFile = $("input[name='uploadFile']");
         var files = inputFile[0].files;
@@ -78,7 +56,7 @@ var main = {
         }
         formData.append('title', $('#title').val());
         formData.append('author',$('#author').val());
-        formData.append('content',$('#content').val());
+        formData.append('content',$('#summernote').val());
         formData.append('type',$('#type').val());
 
         var id = $('#id').val();
