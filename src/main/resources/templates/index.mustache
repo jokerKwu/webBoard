@@ -15,7 +15,50 @@
             {{/name}}
         </div>
     </div>
+    <form action="/post/search" method="GET">
+
+        <div class="row-div">
+            <div class="column-div">
+                <string>연계 타입</string>
+            <select name = "typeOption" class="select-style">
+                <option value="typeAll">전체</option>
+                <option value="hub">HUB</option>
+                <option value="agent">AGENT</option>
+                <option value="webconsole" >WEBCONSOLE</option>
+                <option value="typeEtc" >기타</option>
+            </select>
+            </div>
+            <div class="column-div">
+                <string>연계 패턴</string>
+            <select name = "patternOption" class="select-style">
+                <option value="patternAll">전체</option>
+                <option value="db">DB연계</option>
+                <option value="file">FILE연계</option>
+                <option value="app" >응용연계</option>
+                <option value="patternEtc" >기타</option>
+            </select>
+            </div>
+            <div class="column-div">
+                <br>
+            <select name = "searchOption" class="select-style">
+                <option value="title">제목</option>
+                <option value="author">작성자</option>
+                <option value="content">내용</option>
+                <option value="searchAll" >제목+내용</option>
+            </select>
+            </div>
+            <div class="column-div">
+                <br>
+                <input name="keyword" class="select-style" type="text" placeholder="검색어를 입력해주세요."/>
+            </div>
+            <div class="column-div">
+                <br>
+                <button class="select-style">검색하기</button>
+            </div>
+        </div>
+    </form>
     <br>
+
     <!-- 목록 출력 영역 -->
     <table class="table">
         <thead class="thead-light">
@@ -46,19 +89,7 @@
         {{/pageNumber}}
     </div>
 
-    <form action="/post/search" method="GET">
 
-        <div>
-            <select name = "searchOption">
-                <option value="title">제목</option>
-                <option value="author">작성자</option>
-                <option value="content">내용</option>
-                <option value="all" >제목+내용</option>
-            </select>
-            <input name="keyword" type="text" placeholder="검색어를 입력해주세요."/>
-            <button>검색하기</button>
-        </div>
-    </form>
 </div>
 
 {{>layout/footer}}

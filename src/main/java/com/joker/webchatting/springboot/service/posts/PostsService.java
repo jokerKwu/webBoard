@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,7 @@ public class PostsService {
                 .content(post.getContent())
                 .fileId(post.getFileId())
                 .type(post.getType())
+                .pattern((post.getPattern()))
                 .build();
         return postDto;
     }
@@ -51,7 +53,7 @@ public class PostsService {
         Posts posts = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
 
-        posts.update(requestDto.getTitle(), requestDto.getContent(),requestDto.getFileId(),requestDto.getFilename(),requestDto.getType());
+        posts.update(requestDto.getTitle(), requestDto.getContent(),requestDto.getFileId(),requestDto.getFilename(),requestDto.getType(),requestDto.getPattern());
 
         return id;
     }
@@ -80,23 +82,25 @@ public class PostsService {
     }
     //키워드 검색
     @Transactional
-    public List<PostDto> searchPosts(String searchOption, String keyword) {
+    public List<PostDto> searchPosts(HashMap<String,String> requestMap, String keyword) {
         List<PostDto> postDtoList = new ArrayList<>();
         List<Posts> postEntities = new ArrayList<>();
+        String typeOption = requestMap.get("typeOption");
+        String patternOption = requestMap.get("patternOption");
+        String searchOption = requestMap.get("searchOption");
+
+
         if(searchOption.equals("title")) {
-            postEntities = postsRepository.findByTitleContainingIgnoreCase(keyword);
+            postEntities = postsRepository.findByTitleDesc("etc","etc",keyword);
 
         }else if(searchOption.equals("content")){
-            postEntities = postsRepository.findByContentContainingIgnoreCase(keyword);
-
+            postEntities = postsRepository.findByContentDesc("etc","etc",keyword);
         }else if(searchOption.equals("all")){
-            postEntities = postsRepository.findAllByContentContainingIgnoreCaseOrTitleContainingIgnoreCase(keyword,keyword);
+            postEntities = postsRepository.findByTitleOrByContentDesc("etc","etc",keyword);
         }else if(searchOption.equals("author")){
-            postEntities = postsRepository.findByAuthorContainingIgnoreCase(keyword);
+            postEntities = postsRepository.findByAuthorDesc("etc","etc",keyword);
         }
-        else if (searchOption.equals("type")){
-            postEntities = postsRepository.findByTypeContaining(keyword);
-        }
+
         if (postEntities.isEmpty()) return postDtoList;
         for (Posts postEntity : postEntities) {
             postDtoList.add(this.convertEntityToDto(postEntity));
@@ -111,6 +115,7 @@ public class PostsService {
                 .id(postEntity.getId())
                 .fileId(postEntity.getFileId())
                 .type(postEntity.getType())
+                .pattern(postEntity.getPattern())
                 .build();
     }
     //페이지 번호 추가

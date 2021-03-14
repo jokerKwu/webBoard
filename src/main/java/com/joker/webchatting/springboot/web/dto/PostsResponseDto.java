@@ -13,6 +13,7 @@ public class PostsResponseDto {
     private String filename;
     private String author;
     private String type;
+    private String pattern;
 
     public PostsResponseDto(Posts entity) {
         this.id = entity.getId();
@@ -22,5 +23,6 @@ public class PostsResponseDto {
         this.author = entity.getAuthor();
         this.filename = entity.getFilename();
         this.type = entity.getType();
+        this.pattern = entity.getPattern();
     }
 }

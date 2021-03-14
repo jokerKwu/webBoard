@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -88,8 +85,13 @@ public class IndexController {
     }
 
     @GetMapping("/post/search")
-    public String search(@RequestParam("searchOption") String searchOption, @RequestParam("keyword")String keyword, Model model, @LoginUser SessionUser user){
-        List<PostDto> postDtoList = postsService.searchPosts(searchOption,keyword);
+    public String search(@RequestParam("typeOption") String typeOption, @RequestParam("patternOption") String patternOption, @RequestParam("searchOption") String searchOption, @RequestParam("keyword")String keyword, Model model, @LoginUser SessionUser user){
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("typeOption", typeOption);
+        requestMap.put("patternOption", patternOption);
+        requestMap.put("searchOption", searchOption);
+
+        List<PostDto> postDtoList = postsService.searchPosts(requestMap,keyword);
         model.addAttribute("name",user.getName());
         model.addAttribute("posts", postDtoList);
         model.addAttribute("same",user.getName());
