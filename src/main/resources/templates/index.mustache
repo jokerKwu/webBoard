@@ -1,26 +1,11 @@
 {{>layout/header}}
 
-<div class="col-md-12">
-    <div class="row login-container">
-        <div class="col-md-6 login-form">
-            {{#name}}
-                <p><span id="user">{{name}} 접속 중</span></p>
-                <a href="/posts/save" role="button" class="btn btn-outline-primary">글 등록</a>
-                <a href="/post/chat" class="btn btn-outline-primary">챗봇방 입장</a>
-                <a href="/logout" class="btn btn-outline-danger" role="button">로그아웃</a>
-            {{/name}}
-            {{^name}}
-                <a href="/oauth2/authorization/google" class="btn btn-outline-primary" role="button">구글 로그인</a>
-                <a href="/oauth2/authorization/naver" class="btn btn-outline-primary" role="button">네이버 로그인</a>
-            {{/name}}
-        </div>
-    </div>
-    <form action="/post/search" method="GET">
-
-        <div class="row-div">
+<nav class="col-md-12">
+    <div class="row-nav-div">
+    <form action="/post/search" method="GET" class="nav-form">
             <div class="column-div">
-                <string>연계 타입</string>
-            <select name = "typeOption" class="select-style">
+            <select name = "typeOption" class="select-style ">
+                <option value="" selected disabled hidden> 연계타입</option>
                 <option value="typeAll">전체</option>
                 <option value="hub">HUB</option>
                 <option value="agent">AGENT</option>
@@ -29,8 +14,8 @@
             </select>
             </div>
             <div class="column-div">
-                <string>연계 패턴</string>
             <select name = "patternOption" class="select-style">
+                <option value="" selected disabled hidden> 연계패턴 </option>
                 <option value="patternAll">전체</option>
                 <option value="db">DB연계</option>
                 <option value="file">FILE연계</option>
@@ -39,7 +24,6 @@
             </select>
             </div>
             <div class="column-div">
-                <br>
             <select name = "searchOption" class="select-style">
                 <option value="title">제목</option>
                 <option value="author">작성자</option>
@@ -48,23 +32,33 @@
             </select>
             </div>
             <div class="column-div">
-                <br>
-                <input name="keyword" class="select-style" type="text" placeholder="검색어를 입력해주세요."/>
+                <input name="keyword" class="input-style" type="text" placeholder="검색어를 입력해주세요."/>
             </div>
             <div class="column-div">
-                <br>
-                <button class="select-style">검색하기</button>
+                <button class="search-btn">검색하기</button>
             </div>
-        </div>
     </form>
-    <br>
+        <div class="nav-login">
+                {{#name}}
+                    <span id="user" class="userName">{{name}} 접속 중</span>
+                    <a href="/posts/save" role="button" class="btn btn-outline-primary">글 등록</a>
+                    <a href="/post/chat" class="btn btn-outline-primary">챗봇방 입장</a>
+                    <a href="/logout" class="btn btn-outline-danger" role="button">로그아웃</a>
+                {{/name}}
+                {{^name}}
+                    <a href="/oauth2/authorization/google" class="btn btn-outline-primary" role="button">구글 로그인</a>
+                    <a href="/oauth2/authorization/naver" class="btn btn-outline-primary" role="button">네이버 로그인</a>
+                {{/name}}
+        </div>
+    </div>
 
     <!-- 목록 출력 영역 -->
     <table class="table">
         <thead class="thead-light">
         <tr>
             <th scope="col">게시글번호</th>
-            <th scope="col">타입</th>
+            <th scope="col">연계타입</th>
+            <th scope="col">연계패턴</th>
             <th scope="col">제목</th>
             <th scope="col">작성자</th>
             <th scope="col">최종수정일</th>
@@ -75,6 +69,7 @@
             <tr>
                 <td>{{id}}</td>
                 <td>{{type}}</td>
+                <td>{{pattern}}</td>
                 <td><a href="/posts/contents/{{id}}">{{title}}</a></td>
                 <td>{{author}}</td>
                 <td>{{modifiedDate}}</td>
@@ -83,13 +78,13 @@
         </tbody>
     </table>
 
-    <div>
+    <nav class="page-nav">
+        <ul class="pagination">
         {{#pageNumber}}
-            <a href="/?page={{.}}">{{.}}</a>
+            <li><a href="/?page={{.}}">{{.}}</a></li>
         {{/pageNumber}}
-    </div>
-
-
+        </ul>
+    </nav>
 </div>
 
 {{>layout/footer}}
