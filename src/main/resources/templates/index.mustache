@@ -1,6 +1,6 @@
 {{>layout/header}}
 
-<nav class="col-md-12">
+<h1 xmlns:th="http://www.w3.org/1999/xhtml" style="text-align: center; "><a href="/"> eCross 이슈 게시글 </a></h1>
     <div class="row-nav-div">
     <form action="/post/search" method="GET" class="nav-form">
             <div class="column-div">
@@ -56,23 +56,23 @@
     <table class="table">
         <thead class="thead-light">
         <tr>
-            <th scope="col">게시글번호</th>
-            <th scope="col">연계타입</th>
-            <th scope="col">연계패턴</th>
-            <th scope="col">제목</th>
-            <th scope="col">작성자</th>
-            <th scope="col">최종수정일</th>
+            <th class="table-th" scope="col">번호</th>
+            <th class="table-th" scope="col">연계타입</th>
+            <th class="table-th" scope="col">연계패턴</th>
+            <th class="table-th" scope="col">제목</th>
+            <th class="table-th" scope="col">작성자</th>
+            <th class="table-th" scope="col">최종수정일</th>
         </tr>
         </thead>
         <tbody id="tbody">
         {{#posts}}
             <tr>
-                <td>{{id}}</td>
-                <td>{{type}}</td>
-                <td>{{pattern}}</td>
-                <td><a href="/posts/contents/{{id}}">{{title}}</a></td>
-                <td>{{author}}</td>
-                <td>{{modifiedDate}}</td>
+                <td class="table-td-id">{{id}}</td>
+                <td class="table-td-type">{{type}}</td>
+                <td class="table-td-pattern">{{pattern}}</td>
+                <td class="table-td-content"><a href="/posts/contents/{{id}}">{{title}}</a></td>
+                <td class="table-td-author">{{author}}</td>
+                <td class="table-td-date">{{modifiedDate}}</td>
             </tr>
         {{/posts}}
         </tbody>

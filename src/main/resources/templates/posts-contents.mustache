@@ -2,27 +2,30 @@
 
 <h3 style="text-align: center;">게 시 글</h3>
 
-<div class="col-md-12">
-    <div class="col-md-10">
+<div class="div-flex">
+    <div class="content-template">
         <form>
             <div class="form-group" style="display:none">
                 <label for="title">글 번호</label>
                 <input type="text" class="form-control" id="id" value="{{post.id}}" readonly>
             </div>
             <div class="form-group">
-                <label for="title">제목</label>
+                <label for="title" class="label-text">제목</label>
                 <input type="text" class="form-control" id="title" value="{{post.title}}" readonly>
             </div>
             <div class="form-group" style="display:none">
-                <label for="author"> 작성자 </label>
+                <label for="author" class="label-text"> 작성자 </label>
                 <input type="text" class="form-control" id="author" value="{{post.author}}" readonly>
             </div>
             <div class="form-group">
-                <label for="author"> 글 타입 </label>
+                <label for="type" class="label-text"> 연계 타입 </label>
                 <input type="text" class="form-control" id="type" value="{{post.type}}" readonly>
             </div>
             <div class="form-group">
-                <label for="content"> 내용 </label>
+                <label for="pattern" class="label-text"> 연계 패턴 </label>
+                <input type="text" class="form-control" id="pattern" value="{{post.pattern}}" readonly>
+            </div>
+            <div class="form-group">
                 <textarea class="form-control" id="summernote" name="content" style= "height:420px;">{{post.content}}</textarea>
             </div>
             {{#post.fileId}}
@@ -37,36 +40,55 @@
                 </div>
             {{/post.fileId}}
         </form>
-        <a href="/" role="button" class="btn btn-outline-danger">취소</a>
         {{#same}}
-            <a href="/posts/update/{{id}}" role="button" class="btn btn-outline-primary" id="btn_update">수정</a>
-            <button type="button" class="btn btn-outline-danger" id="btn-delete">삭제</button>
+            <div class="btn-group btn-group-justified" role="group" aria-label="..." style="width:100%">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" id="btn-update-page">수정</button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" id="btn-delete">삭제</button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" id="btn-cancel">취소</button>
+                </div>
+            </div>
         {{/same}}
         {{^same}}
-            <button type="button" class="btn btn-outline-primary" id="btn-update" disabled>수정</button>
-            <button type="button" class="btn btn-outline-danger" id="btn-delete" disabled>삭제</button>
+            <div class="btn-group btn-group-justified" role="group" aria-label="..." style="width:100%">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" id="btn-update-page" disabled>수정</button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" id="btn-delete" disabled>삭제</button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" id="btn-cancel">취소</button>
+                </div>
+            </div>
         {{/same}}
-    </div>
-    <!--
-    21-01-22 댓글 추가 진행중
-    -->
-    <div class="col-md-10">
-        <label for="commentsContent">댓 글</label>
-        <form name="commentsForm">
-            <div class="input-group">
-                <input type="hidden" name="postId" value={{post.id}}/>
-                <input type="text" class="form-control" id="commentsContent" name="commentsContent" placeholder="내용을 입력하세요.">
-                <span class="input-group-btn">
+        <!--
+        21-01-22 댓글 추가 진행중
+        -->
+        <div class="col-md-10">
+            <label for="commentsContent">댓 글</label>
+            <form name="commentsForm">
+                <div class="input-group">
+                    <input type="hidden" name="postId" value={{post.id}}/>
+                    <input type="text" class="form-control" id="commentsContent" name="commentsContent" placeholder="내용을 입력하세요.">
+                    <span class="input-group-btn">
                     <button class="form-control" type="button" id="btn-comments-save" name="btn-comments-save">등록</button>
                </span>
-            </div>
-        </form>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-10">
+            <div class="commentsList"></div>
+        </div>
     </div>
 
-    <div class="col-md-10">
-        <div class="commentsList"></div>
-    </div>
+
 </div>
+
 <script>
     $(document).ready(function() {
         $('#summernote').summernote('disable');

@@ -33,7 +33,7 @@ public class PostsApiController {
 
 
     @PostMapping("/api/v1/fileUpload")
-    public void uploadAjaxPost(@RequestParam("uploadFile") MultipartFile[] files, @RequestParam("title")String title, @RequestParam("author")String author, @RequestParam("content")String content , @RequestParam("type")String type) {
+    public void uploadAjaxPost(@RequestParam("uploadFile") MultipartFile[] files, @RequestParam("title")String title, @RequestParam("author")String author, @RequestParam("content")String content , @RequestParam("type")String type,@RequestParam("pattern")String pattern) {
         //윈도우
         //String savePath = "C:\\upload";//실행되는 위치의 files 폴더에 파일이 저장된다.
         //리눅스
@@ -44,6 +44,7 @@ public class PostsApiController {
         requestDto.setAuthor(author);
         requestDto.setContent(content);
         requestDto.setType(type);
+        requestDto.setPattern(pattern);
 
         for(MultipartFile multipartFile : files) {
             System.out.println("---------------------------------");
@@ -103,14 +104,15 @@ public class PostsApiController {
             재등록한다.
     */
     @PostMapping("api/v1/posts/{id}")
-    public Long update(@PathVariable Long id, @RequestParam("uploadFile") MultipartFile[] files, @RequestParam("title")String title, @RequestParam("author")String author, @RequestParam("content")String content,@RequestParam("type")String type ){
-
+    public Long update(@PathVariable Long id, @RequestParam("uploadFile") MultipartFile[] files, @RequestParam("title")String title, @RequestParam("author")String author, @RequestParam("content")String content,@RequestParam("type")String type,@RequestParam("pattern") String pattern ){
+        System.out.println("여기여기1");
         //파일을 등록한다.
         String savePath = "C:\\upload";//실행되는 위치의 files 폴더에 파일이 저장된다.
         PostsUpdateRequestDto requestDto = new PostsUpdateRequestDto();
         requestDto.setTitle(title);
         requestDto.setContent(content);
         requestDto.setType(type);
+        requestDto.setPattern(pattern);
 
         for(MultipartFile multipartFile : files) {
             System.out.println("---------------------------------");
@@ -145,6 +147,14 @@ public class PostsApiController {
             }
         }
         return postsService.update(id, requestDto);
+    }
+    @PostMapping("/cancel")
+    public String cancel(){
+        return "index";
+    }
+    @PostMapping("/update")
+    public String updatePage(){
+        return "index";
     }
 /*
     @PutMapping("/api/v1/posts/{id}")

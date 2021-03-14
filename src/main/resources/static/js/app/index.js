@@ -9,12 +9,19 @@ var main = {
            _this.update();
         });
 
+        $('#btn-update-page').on('click', function () {
+            _this.updatePage();
+        });
+
         $('#btn-delete').on('click', function () {
             _this.delete();
         });
 
         $('#btn-comments-save').on('click',function(){
            _this.comments_save();
+        });
+        $('#btn-cancel').on('click', function () {
+            _this.cancel();
         });
        commentsList();
     },
@@ -30,6 +37,7 @@ var main = {
         formData.append('author',$('#author').val());
         formData.append('content',$('#summernote').val());
         formData.append('type',$('#type').val());
+        formData.append('pattern',$('#pattern').val());
 
         $.ajax({
             type: 'POST',
@@ -55,10 +63,11 @@ var main = {
             formData.append("uploadFile",files[i]);
         }
         formData.append('title', $('#title').val());
+
         formData.append('author',$('#author').val());
         formData.append('content',$('#summernote').val());
         formData.append('type',$('#type').val());
-
+        formData.append('pattern',$('#pattern').val());
         var id = $('#id').val();
         $.ajax({
             type: 'POST',
@@ -75,7 +84,35 @@ var main = {
             alert(JSON.stringify(error));
         });
     },
-
+    updatePage : function(){
+        var id = $('#id').val();
+        $.ajax({
+            type: 'POST',
+            url: '/update',
+            processData: false,
+            contentType: false,
+            success: function(){
+            }
+        }).done(function() {
+            window.location.href = '/posts/update/'+id;
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
+    cancel : function(){
+        $.ajax({
+            type: 'POST',
+            url: '/cancel',
+            processData: false,
+            contentType: false,
+            success: function(){
+            }
+        }).done(function() {
+            window.location.href = '/';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    },
     delete : function () {
         var id = $('#id').val();
 
