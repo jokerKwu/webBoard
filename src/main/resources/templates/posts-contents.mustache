@@ -18,7 +18,7 @@
                 <input type="text" class="form-control" id="author" value="{{post.author}}" readonly>
             </div>
             <div class="form-group">
-                <label for="type" class="label-text"> 연계 타입 </label>
+                <label for="type" class="label-text"> 연계 모듈 </label>
                 <input type="text" class="form-control" id="type" value="{{post.type}}" readonly>
             </div>
             <div class="form-group">
@@ -26,7 +26,7 @@
                 <input type="text" class="form-control" id="pattern" value="{{post.pattern}}" readonly>
             </div>
             <div class="form-group">
-                <textarea class="form-control" id="summernote" name="content" style= "height:420px;">{{post.content}}</textarea>
+                <textarea class="form-control" id="summernote" name="content" >{{post.content}}</textarea>
             </div>
             {{#post.fileId}}
                 <div  class="form-group">
@@ -41,7 +41,7 @@
             {{/post.fileId}}
         </form>
         {{#same}}
-            <div class="btn-group btn-group-justified" role="group" aria-label="..." style="width:100%">
+            <div class="btn-group btn-group-justified btn-padding" role="group" aria-label="..." style="width:100%">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-default" id="btn-update-page">수정</button>
                 </div>
@@ -54,7 +54,7 @@
             </div>
         {{/same}}
         {{^same}}
-            <div class="btn-group btn-group-justified" role="group" aria-label="..." style="width:100%">
+            <div class="btn-group btn-group-justified btn-padding" role="group" aria-label="..." style="width:100%">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-default" id="btn-update-page" disabled>수정</button>
                 </div>
@@ -69,7 +69,7 @@
         <!--
         21-01-22 댓글 추가 진행중
         -->
-        <div class="col-md-10">
+        <div class="comments-container">
             <label for="commentsContent">댓 글</label>
             <form name="commentsForm">
                 <div class="input-group">

@@ -1,11 +1,12 @@
 {{>layout/header}}
 
 <h1 xmlns:th="http://www.w3.org/1999/xhtml" style="text-align: center; "><a href="/"> eCross 이슈 게시글 </a></h1>
-    <div class="row-nav-div">
+<div class="div-container">
+<div class="row-nav-div">
     <form action="/post/search" method="GET" class="nav-form">
             <div class="column-div">
             <select name = "typeOption" class="select-style ">
-                <option value="" selected disabled hidden> 연계타입</option>
+                <option value="" selected disabled hidden> 연계모듈</option>
                 <option value="typeAll">전체</option>
                 <option value="hub">HUB</option>
                 <option value="agent">AGENT</option>
@@ -19,7 +20,7 @@
                 <option value="patternAll">전체</option>
                 <option value="db">DB연계</option>
                 <option value="file">FILE연계</option>
-                <option value="app" >응용연계</option>
+                <option value="app" >APP연계</option>
                 <option value="patternEtc" >기타</option>
             </select>
             </div>
@@ -85,6 +86,7 @@
         {{/pageNumber}}
         </ul>
     </nav>
+
 </div>
 
 {{>layout/footer}}
