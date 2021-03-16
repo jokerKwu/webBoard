@@ -89,17 +89,59 @@ public class PostsService {
         String patternOption = requestMap.get("patternOption");
         String searchOption = requestMap.get("searchOption");
 
-
-        if(searchOption.equals("title")) {
-            postEntities = postsRepository.findByTitleDesc("etc","etc",keyword);
-
-        }else if(searchOption.equals("content")){
-            postEntities = postsRepository.findByContentDesc("etc","etc",keyword);
-        }else if(searchOption.equals("all")){
-            postEntities = postsRepository.findByTitleOrByContentDesc("etc","etc",keyword);
-        }else if(searchOption.equals("author")){
-            postEntities = postsRepository.findByAuthorDesc("etc","etc",keyword);
+        // type &&  pattern 이 all인 경우
+        if(typeOption.equals("typeAll") && patternOption.equals("patternAll")){
+            if(searchOption.equals("title")) {
+                postEntities = postsRepository.findByTitleContainingIgnoreCaseOrderByIdDesc(keyword);
+            }else if(searchOption.equals("content")){
+                postEntities = postsRepository.findByContentContainingIgnoreCaseOrderByIdDesc(keyword);
+            }else if(searchOption.equals("all")){
+                postEntities = postsRepository.findByAuthorContainingIgnoreCaseOrderByIdDesc(keyword);
+            }else if(searchOption.equals("author")){
+                postEntities = postsRepository.findAllByContentContainingIgnoreCaseOrTitleContainingIgnoreCaseOrderByIdDesc(keyword,keyword);
+            }
         }
+        //pattern all인 경우
+        else if(patternOption.equals("patternAll")){
+            if(searchOption.equals("title")) {
+                postEntities = postsRepository.findByTitleContainingAndByTypeContainingDesc(typeOption,keyword);
+            }else if(searchOption.equals("content")){
+                postEntities = postsRepository.findByContentContainingAndByTypeContainingDesc(typeOption,keyword);
+            }else if(searchOption.equals("all")){
+                postEntities = postsRepository.findByAuthorContainingAndByTypeContainingDesc(typeOption,keyword);
+            }else if(searchOption.equals("author")){
+                postEntities = postsRepository.findByTitleOrContentContainingAndByTypeContainingDesc(typeOption,keyword);
+            }
+        }
+        // type all인 경우
+        else if(typeOption.equals("typeAll")){
+            if(searchOption.equals("title")) {
+                postEntities = postsRepository.findByTitleContainingAndByPatternContainingDesc(patternOption,keyword);
+            }else if(searchOption.equals("content")){
+                postEntities = postsRepository.findByContentContainingAndByPatternContainingDesc(patternOption,keyword);
+            }else if(searchOption.equals("all")){
+                postEntities = postsRepository.findByAuthorContainingAndByPatternContainingDesc(patternOption,keyword);
+            }else if(searchOption.equals("author")){
+                postEntities = postsRepository.findByTitleOrContentContainingAndByPatternContainingDesc(patternOption,keyword);
+            }
+        }
+        // 둘다 아닌 경우
+        else{
+            if(searchOption.equals("title")) {
+                postEntities = postsRepository.findByTitleDesc(typeOption,patternOption,keyword);
+            }else if(searchOption.equals("content")){
+                postEntities = postsRepository.findByContentDesc(typeOption,patternOption,keyword);
+            }else if(searchOption.equals("all")){
+                postEntities = postsRepository.findByTitleOrByContentDesc(typeOption,patternOption,keyword);
+            }else if(searchOption.equals("author")){
+                postEntities = postsRepository.findByAuthorDesc(typeOption,patternOption,keyword);
+            }
+        }
+
+
+
+
+
 
         if (postEntities.isEmpty()) return postDtoList;
         for (Posts postEntity : postEntities) {

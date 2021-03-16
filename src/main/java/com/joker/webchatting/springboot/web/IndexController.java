@@ -60,7 +60,6 @@ public class IndexController {
     @GetMapping("/posts/contents/{id}")
     public String postsUpdate(@PathVariable Long id, Model model,@LoginUser SessionUser user) {
         PostsResponseDto dto = postsService.findById(id);
-        System.out.println(dto.getAuthor() +  "     " + user.getName() );
         if(user.getName().equals(dto.getAuthor()) || user.getName().equals("조현준")) {
             model.addAttribute("same",user.getName());
         }
