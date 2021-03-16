@@ -105,7 +105,6 @@ public class PostsApiController {
     */
     @PostMapping("api/v1/posts/{id}")
     public Long update(@PathVariable Long id, @RequestParam("uploadFile") MultipartFile[] files, @RequestParam("title")String title, @RequestParam("author")String author, @RequestParam("content")String content,@RequestParam("type")String type,@RequestParam("pattern") String pattern ){
-        System.out.println("여기여기1");
         //파일을 등록한다.
         String savePath = "C:\\upload";//실행되는 위치의 files 폴더에 파일이 저장된다.
         PostsUpdateRequestDto requestDto = new PostsUpdateRequestDto();

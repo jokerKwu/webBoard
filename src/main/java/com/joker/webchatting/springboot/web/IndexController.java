@@ -84,7 +84,7 @@ public class IndexController {
     }
 
     @GetMapping("/post/search")
-    public String search(@RequestParam("typeOption") String typeOption, @RequestParam("patternOption") String patternOption, @RequestParam("searchOption") String searchOption, @RequestParam("keyword")String keyword, Model model, @LoginUser SessionUser user){
+    public String search( @PageableDefault Pageable pageable,@RequestParam("typeOption") String typeOption,@RequestParam("patternOption") String patternOption, @RequestParam("searchOption") String searchOption, @RequestParam("keyword")String keyword, Model model, @LoginUser SessionUser user){
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("typeOption", typeOption);
         requestMap.put("patternOption", patternOption);
@@ -94,6 +94,7 @@ public class IndexController {
         model.addAttribute("name",user.getName());
         model.addAttribute("posts", postDtoList);
         model.addAttribute("same",user.getName());
+
         return "index";
     }
 
