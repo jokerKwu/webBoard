@@ -6,19 +6,20 @@
     <form action="/post/search" method="GET" class="nav-form">
             <div class="column-div">
             <select name = "typeOption" class="select-style ">
-                <option value="typeAll">모듈 전체</option>
-                <option value="hub">HUB</option>
-                <option value="agent">AGENT</option>
-                <option value="webconsole" >WEBCONSOLE</option>
+                <option value="typeAll">제품군</option>
+                <option value="eCross4">eCross4</option>
+                <option value="eCross3">eCross3</option>
+                <option value="eCrossMX" >eCrossMX</option>
+                <option value="WAS" >WAS</option>
                 <option value="etc" >기타</option>
             </select>
             </div>
             <div class="column-div">
             <select name = "patternOption" class="select-style">
-                <option value="patternAll">패턴 전체</option>
-                <option value="db">DB연계</option>
-                <option value="file">FILE연계</option>
-                <option value="app" >APP연계</option>
+                <option value="patternAll">카테고리</option>
+                <option value="notice">공지사항</option>
+                <option value="info">정보</option>
+                <option value="error" >에러</option>
                 <option value="etc" >기타</option>
             </select>
             </div>
@@ -56,8 +57,8 @@
         <thead class="thead-light">
         <tr>
             <th class="table-th" scope="col">번호</th>
-            <th class="table-th" scope="col">연계타입</th>
-            <th class="table-th" scope="col">연계패턴</th>
+            <th class="table-th" scope="col">제품</th>
+            <th class="table-th" scope="col">카테고리</th>
             <th class="table-th" scope="col">제목</th>
             <th class="table-th" scope="col">작성자</th>
             <th class="table-th" scope="col">최종수정일</th>
