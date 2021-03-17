@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,9 +83,8 @@ public class PostsService {
     }
     //키워드 검색
     @Transactional
-    public List<PostDto> searchPosts(HashMap<String,String> requestMap, String keyword) {
-        List<PostDto> postDtoList = new ArrayList<>();
-        List<Posts> postEntities = new ArrayList<>();
+    public Page<Posts> searchPosts(HashMap<String,String> requestMap, String keyword,@PageableDefault(size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<Posts> postEntities = null;
         String typeOption = requestMap.get("typeOption");
         String patternOption = requestMap.get("patternOption");
         String searchOption = requestMap.get("searchOption");
@@ -92,62 +92,53 @@ public class PostsService {
         // type &&  pattern 이 all인 경우
         if(typeOption.equals("typeAll") && patternOption.equals("patternAll")){
             if(searchOption.equals("title")) {
-                postEntities = postsRepository.findByTitleContainingIgnoreCaseOrderByIdDesc(keyword);
+                postEntities = postsRepository.findByTitleContainingIgnoreCaseOrderByIdDesc(keyword,pageable);
             }else if(searchOption.equals("content")){
-                postEntities = postsRepository.findByContentContainingIgnoreCaseOrderByIdDesc(keyword);
+                postEntities = postsRepository.findByContentContainingIgnoreCaseOrderByIdDesc(keyword,pageable);
             }else if(searchOption.equals("all")){
-                postEntities = postsRepository.findByAuthorContainingIgnoreCaseOrderByIdDesc(keyword);
+                postEntities = postsRepository.findByAuthorContainingIgnoreCaseOrderByIdDesc(keyword,pageable);
             }else if(searchOption.equals("author")){
-                postEntities = postsRepository.findAllByContentContainingIgnoreCaseOrTitleContainingIgnoreCaseOrderByIdDesc(keyword,keyword);
+                postEntities = postsRepository.findAllByContentContainingIgnoreCaseOrTitleContainingIgnoreCaseOrderByIdDesc(keyword,keyword,pageable);
             }
         }
         //pattern all인 경우
         else if(patternOption.equals("patternAll")){
             if(searchOption.equals("title")) {
-                postEntities = postsRepository.findByTitleContainingAndByTypeContainingDesc(typeOption,keyword);
+                postEntities = postsRepository.findByTitleContainingAndByTypeContainingDesc(typeOption,keyword,pageable);
             }else if(searchOption.equals("content")){
-                postEntities = postsRepository.findByContentContainingAndByTypeContainingDesc(typeOption,keyword);
+                postEntities = postsRepository.findByContentContainingAndByTypeContainingDesc(typeOption,keyword,pageable);
             }else if(searchOption.equals("all")){
-                postEntities = postsRepository.findByAuthorContainingAndByTypeContainingDesc(typeOption,keyword);
+                postEntities = postsRepository.findByAuthorContainingAndByTypeContainingDesc(typeOption,keyword,pageable);
             }else if(searchOption.equals("author")){
-                postEntities = postsRepository.findByTitleOrContentContainingAndByTypeContainingDesc(typeOption,keyword);
+                postEntities = postsRepository.findByTitleOrContentContainingAndByTypeContainingDesc(typeOption,keyword,pageable);
             }
         }
         // type all인 경우
         else if(typeOption.equals("typeAll")){
             if(searchOption.equals("title")) {
-                postEntities = postsRepository.findByTitleContainingAndByPatternContainingDesc(patternOption,keyword);
+                postEntities = postsRepository.findByTitleContainingAndByPatternContainingDesc(patternOption,keyword,pageable);
             }else if(searchOption.equals("content")){
-                postEntities = postsRepository.findByContentContainingAndByPatternContainingDesc(patternOption,keyword);
+                postEntities = postsRepository.findByContentContainingAndByPatternContainingDesc(patternOption,keyword,pageable);
             }else if(searchOption.equals("all")){
-                postEntities = postsRepository.findByAuthorContainingAndByPatternContainingDesc(patternOption,keyword);
+                postEntities = postsRepository.findByAuthorContainingAndByPatternContainingDesc(patternOption,keyword,pageable);
             }else if(searchOption.equals("author")){
-                postEntities = postsRepository.findByTitleOrContentContainingAndByPatternContainingDesc(patternOption,keyword);
+                postEntities = postsRepository.findByTitleOrContentContainingAndByPatternContainingDesc(patternOption,keyword,pageable);
             }
         }
         // 둘다 아닌 경우
         else{
             if(searchOption.equals("title")) {
-                postEntities = postsRepository.findByTitleDesc(typeOption,patternOption,keyword);
+                postEntities = postsRepository.findByTitleDesc(typeOption,patternOption,keyword,pageable);
             }else if(searchOption.equals("content")){
-                postEntities = postsRepository.findByContentDesc(typeOption,patternOption,keyword);
+                postEntities = postsRepository.findByContentDesc(typeOption,patternOption,keyword,pageable);
             }else if(searchOption.equals("all")){
-                postEntities = postsRepository.findByTitleOrByContentDesc(typeOption,patternOption,keyword);
+                postEntities = postsRepository.findByTitleOrByContentDesc(typeOption,patternOption,keyword,pageable);
             }else if(searchOption.equals("author")){
-                postEntities = postsRepository.findByAuthorDesc(typeOption,patternOption,keyword);
+                postEntities = postsRepository.findByAuthorDesc(typeOption,patternOption,keyword,pageable);
             }
         }
 
-
-
-
-
-
-        if (postEntities.isEmpty()) return postDtoList;
-        for (Posts postEntity : postEntities) {
-            postDtoList.add(this.convertEntityToDto(postEntity));
-        }
-        return postDtoList;
+        return postEntities;
     }
     private PostDto convertEntityToDto(Posts postEntity){
         return PostDto.builder()
@@ -213,4 +204,5 @@ public class PostsService {
 
         return postsRepository.findAll(pageable);
     }
+
 }

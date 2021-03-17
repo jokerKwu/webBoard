@@ -31,12 +31,13 @@ public class IndexController {
     public String index(Model model ,@PageableDefault Pageable pageable, @LoginUser SessionUser user) {
 
         Page<Posts> postList = postsService.getPostList(pageable);
-        model.addAttribute("posts",postList);
+        model.addAttribute("posts", postList);
 
         System.out.println("총 엘리먼트 수   : "+ postList.getTotalElements());
         System.out.println("전체 페이지 수   : "+ postList.getTotalPages());
         System.out.println("페이지에 표시할 엘리먼트 수    : "+ postList.getSize());
         System.out.println("현재 페이지 인덱스   : "+ postList.getNumber());
+
         List<Integer> pages = new ArrayList<>();
         for(int i=0;i<postList.getTotalPages();i++){
             Integer num = new Integer(i+1);
@@ -84,16 +85,25 @@ public class IndexController {
     }
 
     @GetMapping("/post/search")
-    public String search( @PageableDefault Pageable pageable,@RequestParam("typeOption") String typeOption,@RequestParam("patternOption") String patternOption, @RequestParam("searchOption") String searchOption, @RequestParam("keyword")String keyword, Model model, @LoginUser SessionUser user){
+    public String search(@PageableDefault(size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,@RequestParam("typeOption") String typeOption,@RequestParam("patternOption") String patternOption, @RequestParam("searchOption") String searchOption, @RequestParam("keyword")String keyword, Model model, @LoginUser SessionUser user){
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("typeOption", typeOption);
         requestMap.put("patternOption", patternOption);
         requestMap.put("searchOption", searchOption);
 
-        List<PostDto> postDtoList = postsService.searchPosts(requestMap,keyword);
+        Page<Posts> postDtoList = postsService.searchPosts(requestMap,keyword,pageable);
         model.addAttribute("name",user.getName());
         model.addAttribute("posts", postDtoList);
         model.addAttribute("same",user.getName());
+
+
+        List<Integer> pages = new ArrayList<>();
+
+        for(int i=0;i<postDtoList.getTotalPages();i++){
+            Integer num = new Integer(i+1);
+            pages.add(num);
+        }
+        model.addAttribute("pageNumber",pages);
 
         return "index";
     }
