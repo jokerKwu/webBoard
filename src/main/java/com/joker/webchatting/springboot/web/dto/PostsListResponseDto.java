@@ -11,7 +11,7 @@ public class PostsListResponseDto {
     private String author;
     private Long fileId;
     private String filename;
-    private LocalDateTime modifiedDate;
+    private String modifiedDate;
     private String type;
     private String pattern;
 

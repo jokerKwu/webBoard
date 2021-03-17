@@ -17,7 +17,7 @@ public class PostDto {
     private String content;
     private Long fileId;
     private String filename;
-    private LocalDateTime modifiedDate;
+    private String modifiedDate;
     private String type;
     private String pattern;
 
@@ -35,7 +35,7 @@ public class PostDto {
     }
 
     @Builder
-    public PostDto(Long id, String title,String content, String author, Long fileId, String filename, LocalDateTime modifiedDate,String type, String pattern){
+    public PostDto(Long id, String title,String content, String author, Long fileId, String filename, String modifiedDate,String type, String pattern){
         this.id = id;
         this.title = title;
         this.content = content;
