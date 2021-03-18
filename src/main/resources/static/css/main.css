@@ -70,7 +70,7 @@ textarea {
     background-color: #FFFFFF;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size:15px;
+    font-size:13px;
     padding:6px 12px;
     width: 300px;
 
@@ -200,4 +200,5 @@ textarea {
     vertical-align: middle;
     background-color:#aaa;
     border-radius: 7px;
+    margin-left:1%;
 }
