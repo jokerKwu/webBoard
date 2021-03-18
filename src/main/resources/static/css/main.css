@@ -186,3 +186,18 @@ textarea {
     padding-top:10px;
     width:83.3%;
 }
+
+.comments-cnt-container{
+    display:inline-block;
+    min-width:10px;
+    padding:3px 7px;
+    font-size:12px;
+    font-weight:bold;
+    line-height:1;
+    color:#fff;
+    text-align:center;
+    white-space:nowrap;
+    vertical-align: middle;
+    background-color:#aaa;
+    border-radius: 7px;
+}

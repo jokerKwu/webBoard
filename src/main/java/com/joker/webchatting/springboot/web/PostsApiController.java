@@ -45,7 +45,6 @@ public class PostsApiController {
         requestDto.setContent(content);
         requestDto.setType(type);
         requestDto.setPattern(pattern);
-        System.out.println("여기 들어오나???");
 
         for(MultipartFile multipartFile : files) {
             System.out.println("---------------------------------");

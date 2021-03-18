@@ -14,6 +14,7 @@ public class PostsResponseDto {
     private String author;
     private String type;
     private String pattern;
+    private Long commentsCnt;
 
     public PostsResponseDto(Posts entity) {
         this.id = entity.getId();
@@ -24,5 +25,6 @@ public class PostsResponseDto {
         this.filename = entity.getFilename();
         this.type = entity.getType();
         this.pattern = entity.getPattern();
+        this.commentsCnt = entity.getCommentsCnt();
     }
 }

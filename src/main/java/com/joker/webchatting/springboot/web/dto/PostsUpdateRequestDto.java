@@ -15,14 +15,16 @@ public class PostsUpdateRequestDto {
     private String filename;
     private String type;
     private String pattern;
+    private Long commentsCnt;
 
     @Builder
-    public PostsUpdateRequestDto(String title, String content, Long fileId, String filename,String type, String pattern) {
+    public PostsUpdateRequestDto(String title, String content, Long fileId, String filename,String type, String pattern,Long commentsCnt) {
         this.title = title;
         this.content = content;
         this.fileId = fileId;
         this.filename = filename;
         this.type = type;
         this.pattern = pattern;
+        this.commentsCnt = commentsCnt;
     }
 }

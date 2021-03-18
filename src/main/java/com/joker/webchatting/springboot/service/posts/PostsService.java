@@ -54,10 +54,19 @@ public class PostsService {
         Posts posts = postsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
 
-        posts.update(requestDto.getTitle(), requestDto.getContent(),requestDto.getFileId(),requestDto.getFilename(),requestDto.getType(),requestDto.getPattern());
+        posts.update(requestDto.getTitle(), requestDto.getContent(),requestDto.getFileId(),requestDto.getFilename(),requestDto.getType(),requestDto.getPattern(), requestDto.getCommentsCnt());
+        return id;
+    }
+
+    @Transactional
+    public Long commentsCntUpdate(Long id) {
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
+        posts.update(posts.getTitle(), posts.getContent(),posts.getFileId(),posts.getFilename(),posts.getType(),posts.getPattern(), posts.getCommentsCnt() + 1);
 
         return id;
     }
+
 
     @Transactional
     public void delete(Long id) {
@@ -65,6 +74,14 @@ public class PostsService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
 
         postsRepository.delete(posts);
+    }
+
+    @Transactional
+    public void commentsCntDelete(Long id) {
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
+        posts.update(posts.getTitle(), posts.getContent(),posts.getFileId(),posts.getFilename(),posts.getType(),posts.getPattern(), posts.getCommentsCnt() - 1);
+
     }
 
     @Transactional(readOnly = true)

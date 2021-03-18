@@ -141,7 +141,7 @@ var main = {
             contentType: false,
             data: formData,
         }).done(function(){
-            alert('댓글이 등록되었다.');
+            alert('댓글이 등록되었습니다.');
             commentsList(formData.get('postId'));
             $('#commentsContent').val('');
         }).fail(function (error){

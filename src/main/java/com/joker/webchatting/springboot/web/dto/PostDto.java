@@ -20,6 +20,7 @@ public class PostDto {
     private String modifiedDate;
     private String type;
     private String pattern;
+    private Long commentsCnt;
 
     public Posts toEntity(){
         Posts postEntity = Posts.builder()
@@ -30,12 +31,13 @@ public class PostDto {
                 .filename(filename)
                 .type(type)
                 .pattern(pattern)
+                .commentsCnt(commentsCnt)
                 .build();
         return postEntity;
     }
 
     @Builder
-    public PostDto(Long id, String title,String content, String author, Long fileId, String filename, String modifiedDate,String type, String pattern){
+    public PostDto(Long id, String title,String content, String author, Long fileId, String filename, String modifiedDate,String type, String pattern, Long commentsCnt){
         this.id = id;
         this.title = title;
         this.content = content;
@@ -45,5 +47,6 @@ public class PostDto {
         this.fileId=fileId;
         this.type = type;
         this.pattern = pattern;
+        this.commentsCnt = commentsCnt;
     }
 }

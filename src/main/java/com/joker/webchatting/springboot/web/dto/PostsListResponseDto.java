@@ -14,6 +14,7 @@ public class PostsListResponseDto {
     private String modifiedDate;
     private String type;
     private String pattern;
+    private Long commentsCnt;
 
     public PostsListResponseDto(Posts entity) {
         this.id = entity.getId();
@@ -24,5 +25,6 @@ public class PostsListResponseDto {
         this.modifiedDate = entity.getModifiedDate();
         this.type = entity.getType();
         this.pattern = entity.getPattern();
+        this.commentsCnt = entity.getCommentsCnt();
     }
 }
