@@ -63,11 +63,11 @@ var main = {
             formData.append("uploadFile",files[i]);
         }
         formData.append('title', $('#title').val());
-
         formData.append('author',$('#author').val());
         formData.append('content',$('#summernote').val());
         formData.append('type',$('#type').val());
         formData.append('pattern',$('#pattern').val());
+        formData.append('commentsCnt',$('#commentsCnt').val());
         var id = $('#id').val();
         $.ajax({
             type: 'POST',

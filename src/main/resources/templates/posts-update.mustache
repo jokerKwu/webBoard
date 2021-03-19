@@ -5,6 +5,7 @@
 <div class="div-flex">
     <div class="content-template">
         <form method="POST" id="fileForm" enctype="multipart/form-data">
+            <input type="hidden" id="commentsCnt" name="commentsCnt" value="{{post.commentsCnt}}"/>
             <div class="form-group" style="display:none">
                 <label for="title">글 번호</label>
                 <input type="text" class="form-control" id="id" value="{{post.id}}" readonly>
