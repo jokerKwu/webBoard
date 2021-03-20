@@ -102,17 +102,4 @@ public class IndexController {
 
         return "index";
     }
-
-    @GetMapping("/posts")
-    public String postView(@PageableDefault Pageable pageable, Model model){
-        Page<Posts> postList = postsService.getPostList(pageable);
-        model.addAttribute("posts",postList);
-        System.out.println("총 엘리먼트 수   : "+ postList.getTotalElements());
-        System.out.println("전체 페이지 수   : "+ postList.getTotalPages());
-        System.out.println("페이지에 표시할 엘리먼트 수    : "+ postList.getSize());
-        System.out.println("현재 페이지 인덱스   : "+ postList.getNumber());
-
-        return "index";
-    }
-
 }
