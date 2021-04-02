@@ -38,13 +38,14 @@ public class PostsApiController {
         //String savePath = "C:\\upload";//실행되는 위치의 files 폴더에 파일이 저장된다.
         //리눅스
         String savePath = "/home/ec2-user/app/step1/upload";//실행되는 위치의 files 폴더에 파일이 저장된다.
-
+        long cnt = 0;
         PostsSaveRequestDto requestDto = new PostsSaveRequestDto();
         requestDto.setTitle(title);
         requestDto.setAuthor(author);
         requestDto.setContent(content);
         requestDto.setType(type);
         requestDto.setPattern(pattern);
+        requestDto.setCommentsCnt(cnt);
 
         for(MultipartFile multipartFile : files) {
             System.out.println("---------------------------------");
