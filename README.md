@@ -2,7 +2,7 @@
 
 ## Site
 
-###Landing Page
+### Landing Page
 #### Main Page
 검색 기능 + 페이징 기능 구현
 ![메인화면](https://user-images.githubusercontent.com/35329247/113373854-bd9d7800-93a6-11eb-8b02-4b8668df0c8b.PNG)
