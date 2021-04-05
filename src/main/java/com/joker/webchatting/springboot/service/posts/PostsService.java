@@ -106,15 +106,19 @@ public class PostsService {
         String patternOption = requestMap.get("patternOption");
         String searchOption = requestMap.get("searchOption");
 
+        System.out.println(typeOption);
+        System.out.println(patternOption);
+        System.out.println(searchOption);
+
         // type &&  pattern 이 all인 경우
         if(typeOption.equals("typeAll") && patternOption.equals("patternAll")){
             if(searchOption.equals("title")) {
                 postEntities = postsRepository.findByTitleContainingIgnoreCaseOrderByIdDesc(keyword,pageable);
             }else if(searchOption.equals("content")){
                 postEntities = postsRepository.findByContentContainingIgnoreCaseOrderByIdDesc(keyword,pageable);
-            }else if(searchOption.equals("all")){
-                postEntities = postsRepository.findByAuthorContainingIgnoreCaseOrderByIdDesc(keyword,pageable);
             }else if(searchOption.equals("author")){
+                postEntities = postsRepository.findByAuthorContainingIgnoreCaseOrderByIdDesc(keyword,pageable);
+            }else if(searchOption.equals("searchAll")){
                 postEntities = postsRepository.findAllByContentContainingIgnoreCaseOrTitleContainingIgnoreCaseOrderByIdDesc(keyword,keyword,pageable);
             }
         }
@@ -124,9 +128,9 @@ public class PostsService {
                 postEntities = postsRepository.findByTitleContainingAndByTypeContainingDesc(typeOption,keyword,pageable);
             }else if(searchOption.equals("content")){
                 postEntities = postsRepository.findByContentContainingAndByTypeContainingDesc(typeOption,keyword,pageable);
-            }else if(searchOption.equals("all")){
-                postEntities = postsRepository.findByAuthorContainingAndByTypeContainingDesc(typeOption,keyword,pageable);
             }else if(searchOption.equals("author")){
+                postEntities = postsRepository.findByAuthorContainingAndByTypeContainingDesc(typeOption,keyword,pageable);
+            }else if(searchOption.equals("searchAll")){
                 postEntities = postsRepository.findByTitleOrContentContainingAndByTypeContainingDesc(typeOption,keyword,pageable);
             }
         }
@@ -136,9 +140,9 @@ public class PostsService {
                 postEntities = postsRepository.findByTitleContainingAndByPatternContainingDesc(patternOption,keyword,pageable);
             }else if(searchOption.equals("content")){
                 postEntities = postsRepository.findByContentContainingAndByPatternContainingDesc(patternOption,keyword,pageable);
-            }else if(searchOption.equals("all")){
-                postEntities = postsRepository.findByAuthorContainingAndByPatternContainingDesc(patternOption,keyword,pageable);
             }else if(searchOption.equals("author")){
+                postEntities = postsRepository.findByAuthorContainingAndByPatternContainingDesc(patternOption,keyword,pageable);
+            }else if(searchOption.equals("searchAll")){
                 postEntities = postsRepository.findByTitleOrContentContainingAndByPatternContainingDesc(patternOption,keyword,pageable);
             }
         }
@@ -148,9 +152,9 @@ public class PostsService {
                 postEntities = postsRepository.findByTitleDesc(typeOption,patternOption,keyword,pageable);
             }else if(searchOption.equals("content")){
                 postEntities = postsRepository.findByContentDesc(typeOption,patternOption,keyword,pageable);
-            }else if(searchOption.equals("all")){
-                postEntities = postsRepository.findByTitleOrByContentDesc(typeOption,patternOption,keyword,pageable);
             }else if(searchOption.equals("author")){
+                postEntities = postsRepository.findByTitleOrByContentDesc(typeOption,patternOption,keyword,pageable);
+            }else if(searchOption.equals("searchAll")){
                 postEntities = postsRepository.findByAuthorDesc(typeOption,patternOption,keyword,pageable);
             }
         }
