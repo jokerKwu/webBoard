@@ -23,9 +23,13 @@ before_install:
 
 #S3 연동
 before_deploy:
-  - zip -r webBoard *
-  - mkdir -p deploy
-  - mv webBoard.zip deploy/webBoard.zip
+  - mkdir -p before-deploy
+  - cp scripts/*.sh before-deploy/
+  - cp appspec.yml before-deploy/
+  - cp build/libs/*.jar before-deploy/
+  - cd before-deploy && zip -r before-deploy *
+  - cd ../ && mkdir -p deploy
+  - mv before-deploy/before-deploy.zip deploy/webBoard.zip
 
 deploy:
   - provider: s3
