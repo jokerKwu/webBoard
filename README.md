@@ -1,7 +1,7 @@
 # 이슈 게시판
 
 ## Site
-
+http://ec2-54-180-105-57.ap-northeast-2.compute.amazonaws.com/
 ### Landing Page
 #### Main Page
 검색 기능 + 페이징 기능 구현
