@@ -177,6 +177,5 @@ public class PostsApiController {
     @GetMapping("/api/v1/posts/list")
     public List<PostsListResponseDto> findAll() {
         return postsService.findAllDesc();
-
     }
 }
