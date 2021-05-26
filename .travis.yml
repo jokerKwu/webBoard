@@ -2,20 +2,41 @@ language: java
 jdk:
   - openjdk8
 
+#Travis CI를 어느 브랜치가 푸시될 때 수행할지 지정한다.
 branches:
   only:
     - master
 
 # Travis CI 서버의 Home
+#그레이들을 통해 의존성을 받게 되면 이를 해당 디렉토리에 캐시하여, 같은 의존성은 다음 배포 떄부터 다시 받지 않도록 설정한다.
 cache:
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
 
+#master 브랜치에 푸시되었을 때 수행하는 명령어이다.
 script: "./gradlew clean build"
 
+#gradlew 파일 권한 부여
 before_install:
   - chmod +x gradlew
+
+#S3 연동
+before_deploy:
+  - zip -r webBoard *
+  - mkdir -p deploy
+  - mv webBoard.zip deploy/webBoard.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY  #Travis repo settings에 설정된 값.
+    secret_access_key: $AWS_SECRET_KEY #Travis repo settings에 설정된 값.
+    bucket: jokerkwu
+    region: ap-northeast-2
+    acl: private # zip 파일 접근을 private으로
+    local_dir: deploy   #before_deploy에서 생성한 디렉토리
+    wait-until-deployed: true
+
 
 # CI 실행 완료시 메일로 알람
 notification:
