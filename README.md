@@ -24,8 +24,8 @@ Summernote Edit 사용
  Date | Content 
   ---|:---:
    2021-03-05 | [ JPA ](https://github.com/jokerKwu/webBoard/blob/master/study/JPA.md)
-   2021-05-29 | [ JPA ](https://github.com/jokerKwu/webBoard/blob/master/study/CI%26CD.md)
-   
+   2021-05-29 | [ CI/CD ](https://github.com/jokerKwu/webBoard/blob/master/study/CI%26CD.md)  
+   2021-05-31 | [ REST API ](https://github.com/jokerKwu/webBoard/blob/master/study/REST%20API.md)
    
    
   
